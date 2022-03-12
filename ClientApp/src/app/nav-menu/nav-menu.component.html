@@ -1,6 +1,6 @@
 <header>
   <nav
-    class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"
+    class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3 fixed-bottom-sm navbar-light bg-light"
   >
     <div class="container">
       <a class="navbar-brand" [routerLink]="['/']">GymAssistant</a>
@@ -16,7 +16,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div
-        class="navbar-collapse collapse d-sm-inline-flex justify-content-end"
+        class="navbar-collapse collapse  d-sm-inline-flex justify-content-end"
         [ngClass]="{ show: isExpanded }"
       >
         <ul class="navbar-nav flex-grow">
@@ -27,12 +27,22 @@
           >
             <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
           </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/counter']"
-              >Counter</a
-            >
+          <li class="nav-item dropdown" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" data-toggle="dropdown">Training</a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href='#'>Continue training</a>
+              <a class="dropdown-item" [routerLink]="['/training']">Start new training</a>
+              <a class="dropdown-item" [routerLink]="['/explore-exercises']">Explore exercises</a>
+              <a class="dropdown-item" [routerLink]="['/add-exercise']">Add exercises</a>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-dark">Locate gym</a>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" [routerLink]="['/tabata']">Tabata</a>
+          </li>
+          <li class="nav-item" routerLinkActive="link-active">
             <a class="nav-link text-dark" [routerLink]="['/fetch-data']"
               >Fetch data</a
             >

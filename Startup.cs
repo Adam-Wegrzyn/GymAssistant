@@ -1,3 +1,4 @@
+using Core;
 using DataAccess;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -22,6 +23,9 @@ namespace GymAssistant
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddScoped<IRepository, Repository>();
+			services.AddScoped<ITrainingService, TrainingService>();
+
 			services.AddDbContext<GymAssistantDbContext>(options =>
 				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
 					x => x.MigrationsAssembly("GymAssistant")));
