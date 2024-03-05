@@ -1,0 +1,74 @@
+<h3>Add new training plan</h3>
+<form #f="ngForm">
+    <label for="name">Training plan name:</label>
+    <div>
+        <input id="name" name="name" #name="ngModel" [(ngModel)]="trainingPlan.name" required minlength="2">
+        
+
+    </div>
+    <span *ngIf="name?.touched && name?.errors?.['required']">Name is required</span>
+    <span *ngIf="name?.touched && name?.errors?.['minlength']">Name requires min 2 characters</span>
+    <div>
+        <button (click)="addTrainingSession()">+ add Training session</button>
+    </div>
+<!-- <div>
+    <label for="cars">How many training sessions:</label></div>
+<div>
+    <select name="cars" id="cars">
+        <option value="default">1</option>
+        <option *ngFor="let day of days" [value]="day">
+      {{day}}</option>      
+      </select>
+</div> -->
+
+    <div style="margin-top: 10px;" id="sessionRequired">
+        <label for="nameSession">Training session name:</label>
+        <div>
+            <input id="nameSession" name="nameSession" #nameSession="ngModel" [(ngModel)]="trainingSession.name" required minlength="2">
+            <button class="btn btn-success" (click)="addExercise(exerciseSelect.value)">+ add exercise</button>
+            <select #exerciseSelect style="margin: 0 5px;">
+                <option value="{{e.id}}" *ngFor="let e of exercises">
+                {{e.name}} [value]={{e.id}}
+            </option>
+            </select>
+            
+        </div>
+        <span *ngIf="nameSession?.touched && nameSession?.errors?.['required']">Name is required</span>
+<div>
+    Exercises:
+    <ul *ngFor="let e of trainingSession.trainingSets">
+        
+    </ul>
+
+</div>
+    </div>
+
+    <div *ngIf="isSessionVisible" id="set">
+        <label for="name">Set name:</label>
+        <div>
+            <input id="setName" name="setName" #name="ngModel" [(ngModel)]="trainingSession.name" required minlength="2">
+            
+            <button [attr.disabled]='name?.valid ? null : true' (click)="showSession()">Add</button>
+        </div>
+        <span *ngIf="name?.touched && name?.errors?.['required']">Name is required</span>
+
+    </div>
+
+<div>
+    <button style="margin-top:20px;">save</button>
+</div>
+
+
+</form>
+<h3>All training plans list:</h3>
+<div *ngFor="let t of trainings">
+    <h4>{{t.name}}</h4>
+
+    <h5 *ngFor="let ts of trainingSessions">{{ts.name}}</h5>
+    <h6 *ngFor="let tSet in ts.TrainigSet">
+    </h6>
+    <!-- <span style="margin-right: 15px;"><b>{{ts.id}}. </b>{{ts.name}}</span> -->
+    <!-- <button>Modify</button><button (click)="DeleteExercise(e.id)">Delete</button> -->
+</div>
+
+

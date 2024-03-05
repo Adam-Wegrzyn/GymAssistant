@@ -1,0 +1,25 @@
+<h3>Add new exercise</h3>
+<form #f="ngForm">
+    <label for="name">Name:</label>
+    <div>
+        <input id="name" name="name" #name="ngModel" [(ngModel)]="ex.name" required minlength="2">
+        
+        <button [attr.disabled]='name?.valid ? null : true' (click)="onSubmit()">Add</button>
+        {{name.valid}}
+    </div>
+    <span *ngIf="name?.touched && name?.errors?.['required']">Name is required</span>
+    <span *ngIf="name?.touched && name?.errors?.['minlength']">Name requires min 2 characters</span>
+
+
+</form>
+<h3>All exercises list:</h3>
+<div *ngFor="let e of allExercises">
+    <span style="margin-right: 15px;"><b>{{e.id}}. </b>{{e.name}}</span>
+    <button>Modify</button><button (click)="DeleteExercise(e.id)">Delete</button>
+</div>
+
+
+<!-- <pre>Valid? {{f.form.controls['name']?.valid}}</pre>
+<pre>Dirty? {{f.form.controls['name']?.dirty}}</pre>
+<pre>Touched? {{f.form.controls['name']?.touched}}</pre> -->
+

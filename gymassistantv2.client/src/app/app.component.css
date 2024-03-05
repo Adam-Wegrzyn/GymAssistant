@@ -1,0 +1,16 @@
+﻿#main-container{
+    width: 80%;
+    margin: auto;
+}
+#navbar{
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    gap: 20px;
+    justify-content: flex-end;
+    margin-right: 20px;
+}
+
+#navbar > li > a{
+    text-decoration: none;
+}

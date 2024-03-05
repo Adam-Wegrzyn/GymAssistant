@@ -1,0 +1,6 @@
+@GymAssistantv2.Server_HostAddress = http://localhost:5007
+
+GET {{GymAssistantv2.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
