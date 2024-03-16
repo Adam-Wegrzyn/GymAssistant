@@ -20,10 +20,10 @@ namespace GymAssistantv2.Server.Controllers
         }
 
         [HttpGet]
-        [Route("getAllTrainingPlans")]
-        public async Task<IActionResult> GetAllTrainingPlans(CancellationToken cancellationToken)
+        [Route("getAllTrainings")]
+        public async Task<IActionResult> GetAllTrainings(CancellationToken cancellationToken)
         {
-            var result = await _trainingService.GetAllTrainingPlans(cancellationToken);
+           var result = await _trainingService.GetAllTrainings(cancellationToken);
             return Ok(result);
         }
         [HttpGet]
@@ -36,10 +36,10 @@ namespace GymAssistantv2.Server.Controllers
         }
 
         [HttpPost]
-        [Route("addTrainingPlan")]
-        public async Task<IActionResult> AddTrainingPlan([FromBody] TrainingPlanDto trainingPlanDto, CancellationToken cancellationToken)
+        [Route("addTraining")]
+        public async Task<IActionResult> AddTraining([FromBody] TrainingDto trainingDto, CancellationToken cancellationToken)
         {
-            await _trainingService.AddTrainingPlan(trainingPlanDto, cancellationToken);
+            await _trainingService.AddTraining(trainingDto, cancellationToken);
             return Ok();
         }
 

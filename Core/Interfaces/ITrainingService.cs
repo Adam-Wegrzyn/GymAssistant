@@ -6,10 +6,10 @@ namespace GymAssistantv2.Server.Controllers
     public interface ITrainingService
     {
         Task AddExercise(ExerciseDto exerciseDto, CancellationToken cancellationToken);
-        Task AddTrainingPlan(TrainingPlanDto trainingPlanDto, CancellationToken cancellationToken);
+        Task AddTraining(TrainingDto trainingDto, CancellationToken cancellationToken);
         Task DeleteExercise(int id, CancellationToken cancellationToken);
         Task <List<ExerciseDto>> GetAllExercises(CancellationToken cancellationToken);
-        Task <List<TrainingPlanDto>> GetAllTrainingPlans(CancellationToken cancellationToken);
+        Task <List<TrainingDto>> GetAllTrainings(CancellationToken cancellationToken);
         
     }
 }

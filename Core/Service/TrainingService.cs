@@ -1,6 +1,8 @@
 ﻿using Data.Common.DTO;
 using DataAccess.Entities;
 using GymAssistantv2.Server.Controllers;
+using Microsoft.VisualBasic;
+using System.Net.Http.Headers;
 
 namespace Core.Service
 {
@@ -20,9 +22,29 @@ namespace Core.Service
             await _trainingRepository.AddExercise(exercise, cancellationToken);
         }
 
-        public async Task AddTrainingPlan(TrainingPlanDto trainingPlanDto, CancellationToken cancellationToken)
+        public async Task AddTraining(TrainingDto trainingDto, CancellationToken cancellationToken)
         {
-            await _trainingRepository.AddTrainingPlan(trainingPlanDto, cancellationToken);
+            var training = new Training
+            {
+                Name = trainingDto.Name,
+                TrainingSet = new List<TrainingSet>()
+                
+            };
+
+            foreach (var t in trainingDto.TrainingSet)
+            {
+                var trainingSet = new TrainingSet
+                {
+                    Exercise = new Exercise(),
+                    Reps = t.Reps,
+                    Weight = t.Weight
+                };
+                trainingSet.Exercise.Name = t.Exercise.Name;
+                trainingSet.Exercise.Id = t.Exercise.Id;
+                training.TrainingSet.Add(trainingSet);               
+                
+            }
+            await _trainingRepository.AddTraining(training, cancellationToken);
         }
 
         public async Task DeleteExercise(int id, CancellationToken cancellationToken)
@@ -45,18 +67,32 @@ namespace Core.Service
             return exercisesDto;
         }
 
-        public async Task<List<TrainingPlanDto>> GetAllTrainingPlans(CancellationToken cancellationToken)
+        public async Task<List<TrainingDto>> GetAllTrainings(CancellationToken cancellationToken)
         {
-            var trainingPlans = await _trainingRepository.GetAllExercises(cancellationToken);
-            var trainingPlansDto = new List<TrainingPlanDto>();
-            foreach (var trainingPlan in trainingPlans)
+            var trainings = await _trainingRepository.GetAllTrainings(cancellationToken);
+            var trainingsDto = new List<TrainingDto>();
+            foreach (var training in trainings)
             {
-                var t = new TrainingPlanDto();
-                t.Name = trainingPlan.Name;
-                t.Id = trainingPlan.Id;
-                trainingPlansDto.Add(t);
+                var trainingDto = new TrainingDto();
+                trainingDto.Name = training.Name;
+                trainingDto.Id = training.Id;
+                trainingDto.TrainingSet = [];
+                
+                foreach(var tSet in training.TrainingSet)
+                {
+                    var trainingSet = new TrainingSetDto();
+                    trainingSet.Id = tSet.Id;
+                    trainingSet.Reps = tSet.Reps;
+                    trainingSet.Weight  = tSet.Weight;
+                    trainingSet.Exercise = new ExerciseDto { Id = tSet.Exercise.Id, Name =  tSet.Exercise.Name };
+
+                    trainingDto.TrainingSet.Add(trainingSet);
+
+
+                }
+                trainingsDto.Add(trainingDto);
             }
-            return trainingPlansDto;
+            return trainingsDto;
         }
     }
 }

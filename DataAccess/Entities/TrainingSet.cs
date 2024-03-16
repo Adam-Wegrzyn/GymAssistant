@@ -8,10 +8,9 @@ namespace DataAccess.Entities
 {
     public class TrainingSet: BaseEntity
     {
-        public string Name { get; set; }
         public Exercise Exercise { get; set; }
         public int Reps { get; set; }
         public decimal Weight { get; set; }
-        public TrainingSession TrainingSession { get; set; }
+        public Training Training { get; set; }
     }
 }

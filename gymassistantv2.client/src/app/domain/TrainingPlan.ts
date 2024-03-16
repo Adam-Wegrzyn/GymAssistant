@@ -1,13 +1,14 @@
 import { TrainingSession } from "./TrainingSession";
+import { TrainingSet } from "./TrainingSet";
 
 export class TrainingPlan{
     public id?: number;
     public name: string;
-    public trainingSessions: TrainingSession[];
+    public trainingSet: TrainingSet[];
 
     constructor(){
         this.id = 0,
         this.name = "";
-        this.trainingSessions = [];
+        this.trainingSet = [];
     }
 }

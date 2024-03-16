@@ -1,16 +1,15 @@
+import { Exercise } from "./Exercise";
 
 export class TrainingSet{
     public id: number;
-    public exerciseId: number;
+    public exercise: Exercise;
     public reps: number;
     public weight: number;
-    public trainingSessionId: number;
 
-    constructor(){
+    constructor(exercise: Exercise = new Exercise(), reps: number = 0, weight: number = 0){
         this.id = 0;
-        this.exerciseId = 0;
-        this.reps = 0;
-        this.weight = 0;
-        this.trainingSessionId = 0;
+        this.exercise = exercise;
+        this.reps = reps;
+        this.weight = weight;
     }
 }

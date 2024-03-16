@@ -4,6 +4,10 @@ import { TrainingPlan } from '../domain/TrainingPlan';
 import { Exercise } from '../domain/Exercise';
 import { TrainingService } from '../services/training-service';
 import { TrainingSet } from '../domain/TrainingSet';
+import { Weight } from './weight';
+import { NgForm } from '@angular/forms';
+import { ViewChild } from '@angular/core'
+
 
 
 @Component({
@@ -13,18 +17,25 @@ import { TrainingSet } from '../domain/TrainingSet';
 })
 export class MyTrainingsComponent implements OnInit {
 
+  @ViewChild('f') ngForm : NgForm;
+
   trainingPlan: TrainingPlan = new TrainingPlan();
   trainings: TrainingPlan[];
-  trainingSession: TrainingSession = new TrainingSession();
-  trainingSessions: TrainingSession[];
   exercises: Exercise[];
+  exercise: Exercise = new Exercise();
   showTrainingSession: boolean = false;
   shownTraining: TrainingPlan;
   isSessionVisible = false;
   setCount: number;
   days: number[] = [1, 2, 3, 4, 5, 6, 7];
   days2: string[] = ["1", "2"];
-  trainingSet: TrainingSet;
+  trainingSet: TrainingSet = new TrainingSet();
+  trainingSets: TrainingSet[] = [];
+  reps: number[] = [];
+  weightDecimal: number[] = [];
+  weight: Weight = new Weight();
+  trainingsRows: any = [[]];
+
 
 
   constructor(private trainingService: TrainingService) {
@@ -33,11 +44,34 @@ export class MyTrainingsComponent implements OnInit {
 
 
   ngOnInit(): void {
-    // this.trainingService.GetAllTrainingPlans().subscribe( (res) => this.trainings = res );
-    this.trainingService.GetAllExercises().subscribe(
-      (res) => this.exercises = res
-    )
+    this.trainingService.GetAllTrainings().subscribe(
+    (res) => this.trainings = res,
+    (err) => console.log(err),
+    () => this.createTrainingRows()
+    );
 
+    this.trainingService.GetAllExercises().subscribe( (res) =>  this.exercises = res );
+
+    //initialize dropDowns
+    for(let i=1; i<=30; i++){
+      this.reps.push(i);
+    }
+
+    for(let i=0; i<4; i++){
+      this.weightDecimal.push(i*0.25)
+    }
+
+  }
+
+  private createTrainingRows() {
+    let j = 0;
+    for (let i = 0; i < this.trainings.length; i++) {
+      if (i != 0 && i % 3 == 0) {
+        this.trainingsRows.push([]);
+        j++;
+      }
+      this.trainingsRows[j].push(this.trainings[i]);
+    }
   }
 
   public ExpandTraining(id: number): void {
@@ -51,27 +85,27 @@ export class MyTrainingsComponent implements OnInit {
     this.shownTraining = this.trainings.find(t => t.id)!
   }
 
-  GetTrainings(): void {
-    this.trainingService.GetAllTrainingPlans();
+  addExercise() {
+    console.log(this.exercise)
+    var trainingSet = new TrainingSet(
+      this.exercise,
+      this.trainingSet.reps,
+      this.weight.CombineWeight());
+    this.trainingSets.push(trainingSet)
+    console.log(this.trainingSets)
+
+   
   }
 
-  onSubmit() {
-    throw new Error('Method not implemented.');
-  }
-  showSession() {
-    this.isSessionVisible = true;
-  }
-
-  addExercise(id: string) {
-    console.log(id);
+  onSubmit(){
+    this.trainingSets.forEach((t) => {
+      this.trainingPlan.trainingSet.push(t);
+    })
+    this.trainingService.AddTrainingPlan(this.trainingPlan).subscribe(
+      err => (console.log(err))
+    );
+    this.ngForm.reset();
     this.trainingSet = new TrainingSet();
-    var trainingSession = this.trainingPlan.trainingSessions.find(t => t = this.trainingSession)
-    trainingSession?.trainingSets.push(this.trainingSet)
   }
-  addTrainingPlan() {
-    throw new Error('Method not implemented.');
-  }
-  addTrainingSession() {
-    this.trainingPlan.trainingSessions.push(this.trainingSession)
-  }
+
 }

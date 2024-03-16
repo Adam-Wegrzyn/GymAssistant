@@ -25,7 +25,7 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TrainingPlans",
+                name: "Trainings",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -34,27 +34,7 @@ namespace DataAccess.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TrainingPlans", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TrainingSessionss",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TrainingsPlanId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TrainingSessionss", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_TrainingSessionss_TrainingPlans_TrainingsPlanId",
-                        column: x => x.TrainingsPlanId,
-                        principalTable: "TrainingPlans",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("PK_Trainings", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -63,16 +43,16 @@ namespace DataAccess.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Date = table.Column<DateOnly>(type: "date", nullable: false),
-                    TrainingSessionId = table.Column<int>(type: "int", nullable: false)
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TrainingId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TrainingLogs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TrainingLogs_TrainingSessionss_TrainingSessionId",
-                        column: x => x.TrainingSessionId,
-                        principalTable: "TrainingSessionss",
+                        name: "FK_TrainingLogs_Trainings_TrainingId",
+                        column: x => x.TrainingId,
+                        principalTable: "Trainings",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -83,12 +63,10 @@ namespace DataAccess.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ExerciseId = table.Column<int>(type: "int", nullable: false),
                     Reps = table.Column<int>(type: "int", nullable: false),
-                    Weight = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Sets = table.Column<int>(type: "int", nullable: false),
-                    TrainingSessionId = table.Column<int>(type: "int", nullable: false)
+                    Weight = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
+                    TrainingId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -100,22 +78,17 @@ namespace DataAccess.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_TrainingSets_TrainingSessionss_TrainingSessionId",
-                        column: x => x.TrainingSessionId,
-                        principalTable: "TrainingSessionss",
+                        name: "FK_TrainingSets_Trainings_TrainingId",
+                        column: x => x.TrainingId,
+                        principalTable: "Trainings",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_TrainingLogs_TrainingSessionId",
+                name: "IX_TrainingLogs_TrainingId",
                 table: "TrainingLogs",
-                column: "TrainingSessionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TrainingSessionss_TrainingsPlanId",
-                table: "TrainingSessionss",
-                column: "TrainingsPlanId");
+                column: "TrainingId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TrainingSets_ExerciseId",
@@ -123,9 +96,9 @@ namespace DataAccess.Migrations
                 column: "ExerciseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TrainingSets_TrainingSessionId",
+                name: "IX_TrainingSets_TrainingId",
                 table: "TrainingSets",
-                column: "TrainingSessionId");
+                column: "TrainingId");
         }
 
         /// <inheritdoc />
@@ -141,10 +114,7 @@ namespace DataAccess.Migrations
                 name: "Exercises");
 
             migrationBuilder.DropTable(
-                name: "TrainingSessionss");
-
-            migrationBuilder.DropTable(
-                name: "TrainingPlans");
+                name: "Trainings");
         }
     }
 }

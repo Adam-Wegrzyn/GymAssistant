@@ -8,9 +8,8 @@ namespace Data.Common.DTO
 {
     public class TrainingSetDto: BaseDto
     {
-        public string Name { get; set; }
+        public ExerciseDto Exercise { get; set; }
         public int Reps { get; set; }
         public decimal Weight { get; set; }
-        public int Sets { get; set; }
     }
 }

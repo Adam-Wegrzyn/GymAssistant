@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Data.Common.DTO
 {
-    public class TrainingPlanDto: BaseDto
+    public class TrainingDto: BaseDto
     {
         public string Name { get; set; }
-        public ICollection<TrainingSessionDto> TrainingSessions { get; set; }
+        public ICollection<TrainingSetDto> TrainingSet { get; set; }
     }
 }

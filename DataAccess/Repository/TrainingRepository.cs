@@ -24,9 +24,16 @@ namespace DataAccess.Repository
            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public Task AddTrainingPlan(TrainingPlanDto trainingPlanDto, CancellationToken cancellationToken)
+        public async Task AddTraining(Training training, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            _dbContext.Trainings.Add(training);
+            var exercisesToAttach = training.TrainingSet.Select(t => t.Exercise);
+            foreach (var t in exercisesToAttach)
+            {
+                _dbContext.Exercises.Attach(t);
+            }
+            
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
         public async Task DeleteExercise(int id, CancellationToken cancellationToken)
@@ -47,9 +54,12 @@ namespace DataAccess.Repository
 
         }
 
-        public Task<List<TrainingPlan>> GetAllTrainingPlans(CancellationToken cancellationToken)
+        public async Task<List<Training>> GetAllTrainings(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Trainings
+                .Include(t => t.TrainingSet)
+                .ThenInclude(e => e.Exercise)
+                .ToListAsync(cancellationToken);
         }
     }
 }

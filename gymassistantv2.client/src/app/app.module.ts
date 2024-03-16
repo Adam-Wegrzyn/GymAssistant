@@ -9,6 +9,7 @@ import { AllExercisesComponent } from './all-exercises/all-exercises.component';
 import { AddExerciseComponent } from './add-exercise/add-exercise.component';
 import { MyTrainingsComponent } from './my-trainings/my-trainings.component';
 import { FormsModule }   from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -23,8 +24,8 @@ import { FormsModule }   from '@angular/forms';
     HttpClientModule,
     AppRoutingModule,
     CommonModule,
-    FormsModule
-    
+    FormsModule,
+    FontAwesomeModule  
   ],
   providers: [],
   bootstrap: [AppComponent]

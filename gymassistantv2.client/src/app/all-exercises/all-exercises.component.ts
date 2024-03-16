@@ -14,7 +14,7 @@ export class AllExercisesComponent implements OnInit{
   private changeDetector: ChangeDetectorRef
   allExercises: Exercise[];
   x: Observable<string>;
-  ex: Exercise = new Exercise(0, "");
+  ex: Exercise = new Exercise();
 
   constructor(private trainingService: TrainingService){
     
@@ -24,12 +24,13 @@ export class AllExercisesComponent implements OnInit{
     this.bindExercises()
   }
   DeleteExercise(id: number) {
-    this.trainingService.DeleteExercise(id).subscribe();
-    this.bindExercises();
+    this.trainingService.DeleteExercise(id).subscribe(
+      () => this.bindExercises()
+    );
     }
 
   onSubmit(): void {
-    this.trainingService.AddExercise(this.ex).subscribe((x) => {
+    this.trainingService.AddExercise(this.ex).subscribe(() => {
     }, (err) => {
       console.log(err)
     },

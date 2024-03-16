@@ -39,6 +39,27 @@ namespace DataAccess.Migrations
                     b.ToTable("Exercises");
                 });
 
+            modelBuilder.Entity("DataAccess.Entities.Training", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TrainingSetId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Trainings");
+                });
+
             modelBuilder.Entity("DataAccess.Entities.TrainingLog", b =>
                 {
                     b.Property<int>("Id")
@@ -50,53 +71,14 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("TrainingSessionId")
+                    b.Property<int>("TrainingId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TrainingSessionId");
+                    b.HasIndex("TrainingId");
 
                     b.ToTable("TrainingLogs");
-                });
-
-            modelBuilder.Entity("DataAccess.Entities.TrainingPlan", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TrainingPlans");
-                });
-
-            modelBuilder.Entity("DataAccess.Entities.TrainingSession", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TrainingsPlanId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TrainingsPlanId");
-
-                    b.ToTable("TrainingSessionss");
                 });
 
             modelBuilder.Entity("DataAccess.Entities.TrainingSet", b =>
@@ -110,52 +92,34 @@ namespace DataAccess.Migrations
                     b.Property<int>("ExerciseId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Reps")
                         .HasColumnType("int");
 
-                    b.Property<int>("Sets")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TrainingSessionId")
+                    b.Property<int>("TrainingId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Weight")
-                        .HasPrecision(1)
+                        .HasPrecision(5, 2)
                         .HasColumnType("decimal");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ExerciseId");
 
-                    b.HasIndex("TrainingSessionId");
+                    b.HasIndex("TrainingId");
 
                     b.ToTable("TrainingSets");
                 });
 
             modelBuilder.Entity("DataAccess.Entities.TrainingLog", b =>
                 {
-                    b.HasOne("DataAccess.Entities.TrainingSession", "TrainingSession")
+                    b.HasOne("DataAccess.Entities.Training", "Training")
                         .WithMany()
-                        .HasForeignKey("TrainingSessionId")
+                        .HasForeignKey("TrainingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("TrainingSession");
-                });
-
-            modelBuilder.Entity("DataAccess.Entities.TrainingSession", b =>
-                {
-                    b.HasOne("DataAccess.Entities.TrainingPlan", "TrainingsPlan")
-                        .WithMany("TrainingSessions")
-                        .HasForeignKey("TrainingsPlanId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TrainingsPlan");
+                    b.Navigation("Training");
                 });
 
             modelBuilder.Entity("DataAccess.Entities.TrainingSet", b =>
@@ -166,25 +130,20 @@ namespace DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DataAccess.Entities.TrainingSession", "TrainingSession")
-                        .WithMany("TrainingSets")
-                        .HasForeignKey("TrainingSessionId")
+                    b.HasOne("DataAccess.Entities.Training", "Training")
+                        .WithMany("TrainingSet")
+                        .HasForeignKey("TrainingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Exercise");
 
-                    b.Navigation("TrainingSession");
+                    b.Navigation("Training");
                 });
 
-            modelBuilder.Entity("DataAccess.Entities.TrainingPlan", b =>
+            modelBuilder.Entity("DataAccess.Entities.Training", b =>
                 {
-                    b.Navigation("TrainingSessions");
-                });
-
-            modelBuilder.Entity("DataAccess.Entities.TrainingSession", b =>
-                {
-                    b.Navigation("TrainingSets");
+                    b.Navigation("TrainingSet");
                 });
 #pragma warning restore 612, 618
         }

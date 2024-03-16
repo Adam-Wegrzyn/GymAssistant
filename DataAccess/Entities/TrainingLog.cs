@@ -9,7 +9,7 @@ namespace DataAccess.Entities
     public class TrainingLog: BaseEntity
     {
         public DateTime Date { get; set; }
-        public TrainingSession TrainingSession { get; set; }
+        public Training Training { get; set; }
 
     }
 }
