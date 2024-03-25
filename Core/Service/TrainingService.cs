@@ -37,6 +37,7 @@ namespace Core.Service
                 {
                     Exercise = new Exercise(),
                     Reps = t.Reps,
+                    Sets = t.Sets,
                     Weight = t.Weight
                 };
                 trainingSet.Exercise.Name = t.Exercise.Name;
@@ -50,6 +51,11 @@ namespace Core.Service
         public async Task DeleteExercise(int id, CancellationToken cancellationToken)
         {
             await _trainingRepository.DeleteExercise(id, cancellationToken);
+        }
+
+        public async Task DeleteTraining(int id, CancellationToken cancellationToken)
+        {
+            await _trainingRepository.DeleteTraining(id, cancellationToken);
         }
 
         public async Task<List<ExerciseDto>> GetAllExercises(CancellationToken cancellationToken)
@@ -83,6 +89,7 @@ namespace Core.Service
                     var trainingSet = new TrainingSetDto();
                     trainingSet.Id = tSet.Id;
                     trainingSet.Reps = tSet.Reps;
+                    trainingSet.Sets = tSet.Sets;
                     trainingSet.Weight  = tSet.Weight;
                     trainingSet.Exercise = new ExerciseDto { Id = tSet.Exercise.Id, Name =  tSet.Exercise.Name };
 

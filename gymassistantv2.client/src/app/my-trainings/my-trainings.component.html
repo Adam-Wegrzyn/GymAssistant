@@ -1,81 +1,14 @@
-<h3>Add new training plan</h3>
-<i class="fa fa-car"></i>
-<i class="fa fa-car" style="font-size:48px;"></i>
-<i class="fa fa-car" style="font-size:60px;color:red;"></i>
-<form #f="ngForm">
-    <div class="form-group mb-3">
-        <div class="col-sm-4">
-            <label class="form-label" for="name">Training plan name:</label>
-            <input class="form-control input-sm" id="name" name="name" #name="ngModel" [(ngModel)]="trainingPlan.name" required minlength="2">
-            <span *ngIf="name?.touched && name?.errors?.['required']">Name is required</span>
-            <span *ngIf="name?.touched && name?.errors?.['minlength']">Name requires min 2 characters</span>
-        </div>
-
+<div class="row">
+    <div class="col-2">
+        <button #submitBtn type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#trainingForm0">
+            Add new training
+          </button>
+        <app-training-form [training]="training"></app-training-form>
     </div>
-    
-    <div class="row mb-3">
-        <div class="col-auto">
-            <div class="form-group">
-                <label class="form-label" for="exerciseSelect">Exercise</label>
-                <select name="exerciseSelect" class="form-select" #exerciseSelect [(ngModel)]="exercise" >
-                    <option [ngValue]="e" *ngFor="let e of exercises">
-                    {{e.name}} 
-                </option>
-                </select>
-            </div>
 
-        </div>
-        <div class="col-sm-3">
-            <div class="form-group">
-                <label class="form-label" for="weight">Weight</label>
-                <div class="input-group">
-                    <input class="form-control" name="weight" [(ngModel)]="weight.weightInput">
-                    <span class="input-group-text">.</span>
-                    <select name="weight" [(ngModel)]="weight.weightDropDown">
-                        <option *ngFor="let d of weightDecimal">
-                            {{d}}
-                        </option>
-                    </select>
-                </div>
-                
-
-            </div>
-        </div>
-        <div class="col-auto">
-            <div class="form-group">
-                <label class="form-label" for="exerciseSelect">Reps</label>
-                <select name="reps" class="form-select" [(ngModel)]="trainingSet.reps" #exerciseSelect >
-                    <option *ngFor="let r of reps">
-                    {{r}}
-                </option>
-                </select>
-            </div>
-        </div>
-        <div class="col-auto align-self-end">
-            <div class="align-bottom">
-                <button name="addBtn" class="btn btn-success" (click)="addExercise()">+ add</button>
-            </div>
-            
-        </div>
-
-
-        
-
-    </div>
- <div *ngIf="trainingSets.length > 0" class="mb-3">
-    <div *ngFor="let t of trainingSets">
-        <span *ngIf="trainingSets.length > 0">{{t.exercise.name}} {{t.weight}} {{t.reps}}</span>
-     </div>
- </div>   
-<div class="form-group">
-    <button class="btn btn-success" (click)="onSubmit()">save</button>
+      
 </div>
-
-</form>
-<br>
-<br>
-
-<div *ngFor="let r of trainingsRows" class="row gy-2">
+<div *ngFor="let r of trainingsRows" class="row gy-2 mt-2">
     <div *ngFor="let t of r" class="col-lg-4 col-md-6 col-sm-1">
         <div  class="card bg-light " style="width: 18rem;">
             <div class="card-header d-flex justify-content-between">
@@ -84,14 +17,29 @@
                 </div>
               
               <div>
-                <i class="fa-solid fa-pen"></i>
-                <i class="fa-solid fa-trash"></i>
+                <button style="border:none;" type="button" data-bs-toggle="modal" attr.data-bs-target="#trainingForm{{t.id}}">
+                  <fa-icon class="m-2 text-primary" [icon]="faPen"></fa-icon>
+                  <app-training-form [training]="t"></app-training-form>
+                </button>                
+                <button style="border:none;"  type="button" data-bs-toggle="modal" attr.data-bs-target="#deletePopUp{{t.id}}">
+                  <fa-icon class="text-danger" [icon]="faTrash"></fa-icon>
+                </button>
+                <app-delete-pop-up [training]="t" (isConfirmed)="onDelete($event)"></app-delete-pop-up>
+
               </div>
 
             </div>
             <ul *ngFor="let index of [0,1,2,3,4]" class="list-group list-group-flush">
               <li *ngIf="t.trainingSet[index] != null"  class="list-group-item">
-                {{t.trainingSet[index].exercise.name}} {{t.trainingSet[index].reps}} reps {{t.trainingSet[index].weight}}kg
+                <div class="d-flex justify-content-between">
+                  <div>
+                    {{t.trainingSet[index].exercise.name}}
+                  </div>
+                  <div>
+                    {{t.trainingSet[index].reps}}x{{t.trainingSet[index].sets}}
+                  </div> 
+                </div>
+
             </li>
             </ul>
             <div *ngIf="t.trainingSet.length > 3" class="card-footer bg-transparent border-success align-self-end">
@@ -102,10 +50,6 @@
     </div>
 
 </div>
-<div class="column">
-
-</div>
-
 
 
 

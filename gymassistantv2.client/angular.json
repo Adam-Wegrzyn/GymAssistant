@@ -27,8 +27,7 @@
             "styles": [
               "node_modules/bootstrap/scss/bootstrap.scss",
               "node_modules/bootstrap-icons/font/bootstrap-icons.css",
-              "src/styles.css",
-              "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+              "src/styles.css"
             ],
             "scripts": [
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
@@ -65,10 +64,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "gymassistantv2.client:build:production"
+              "buildTarget": "gymassistantv2.client:build:production"
             },
             "development": {
-              "browserTarget": "gymassistantv2.client:build:development"
+              "buildTarget": "gymassistantv2.client:build:development"
             }
           },
           "defaultConfiguration": "development",
@@ -79,7 +78,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "gymassistantv2.client:build"
+            "buildTarget": "gymassistantv2.client:build"
           }
         },
         "test": {

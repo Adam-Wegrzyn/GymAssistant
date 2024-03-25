@@ -10,6 +10,8 @@ import { AddExerciseComponent } from './add-exercise/add-exercise.component';
 import { MyTrainingsComponent } from './my-trainings/my-trainings.component';
 import { FormsModule }   from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { TrainingFormComponent } from './training-form/training-form.component';
+import { DeletePopUpComponent } from './shared/delete-pop-up/delete-pop-up.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     AppRoutingModule,
     CommonModule,
     FormsModule,
-    FontAwesomeModule  
+    FontAwesomeModule,
+    TrainingFormComponent,
+    DeletePopUpComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

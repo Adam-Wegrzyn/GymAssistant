@@ -48,6 +48,18 @@ namespace DataAccess.Repository
 
         }
 
+        public async Task DeleteTraining(int id, CancellationToken cancellationToken)
+        {
+            var training = _dbContext.Trainings.FirstOrDefault(t => t.Id == id);
+
+            if (training != null)
+            {
+                _dbContext.Trainings.Remove(training);
+                await _dbContext.SaveChangesAsync();
+            }
+            
+        }
+
         public async Task<List<Exercise>> GetAllExercises(CancellationToken cancellationToken)
         {
             return await _dbContext.Exercises.ToListAsync(cancellationToken);

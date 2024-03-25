@@ -10,6 +10,7 @@ namespace Data.Common.DTO
     {
         public ExerciseDto Exercise { get; set; }
         public int Reps { get; set; }
+        public int Sets { get; set; }
         public decimal Weight { get; set; }
     }
 }

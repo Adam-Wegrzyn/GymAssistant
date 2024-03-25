@@ -1,0 +1,81 @@
+<div class="modal fade" id="trainingForm{{training.id}}" #modal{{training.id}} tabindex="-1" aria-labelledby="trainingFormLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="trainingFormlLabel">Add new training</h5>
+        </div>
+        <div class="modal-body">
+            <form #form="ngForm">
+                <div class="form-group mb-3">
+                    <div class="col-sm-4">
+                        <label class="form-label" for="name">Training plan name:</label>
+                        <input class="form-control input-sm" id="name" name="name" #name="ngModel" [(ngModel)]="training.name" required minlength="2">
+                        <span *ngIf="name?.touched && name?.errors?.['required']">Name is required</span>
+                        <span *ngIf="name?.touched && name?.errors?.['minlength']">Name requires min 2 characters</span>
+                    </div>
+            
+                </div>
+                
+                <div *ngFor="let t of training.trainingSet; let i = index;" class="row mt-2">
+                    <div class="col-auto">
+                        <label *ngIf="i == 0" class="form-label" for="exerciseSelect0">Exercise</label>
+                        <div class="form-group">             
+                            <select name="exerciseSelect{{i}}" class="form-select" #exerciseSelect [(ngModel)]="training.trainingSet[i].exercise" >
+                                <option [ngValue]="t.exercise">{{t.exercise.name}}</option>
+                                <option [ngValue]="e" *ngFor="let e of exercises">
+                                {{e.name}} 
+                            </option>
+                            </select>
+                        </div>            
+                    </div>
+                    <div class="col-auto">
+                        <label *ngIf="i == 0" class="form-label" for="reps0">Reps</label>
+                        <div class="form-group">                           
+                            <select name="reps{{i}}" class="form-select" [(ngModel)]="training.trainingSet[i].reps">
+                                <option>{{training.trainingSet[i].reps}}</option>
+                                <option *ngFor="let r of reps">
+                                {{r}}
+                            </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <label *ngIf="i == 0" class="form-label" for="sets0">Sets</label>
+                        <div class="form-group">                           
+                                <select class="form-select" name="sets{{i}}" [(ngModel)]="training.trainingSet[i].sets">
+                                    <option>{{t.sets}}</option>
+                                    <option  *ngFor="let s of sets">
+                                        {{s}}
+                                    </option>
+                                </select>          
+                        </div>
+                            
+                        </div>    
+               
+            
+                </div>
+                <div class="align-bottom mt-2">
+                    <button name="addBtn" class="btn btn-success" (click)="addExercise()">+</button>
+                </div>
+             <div *ngIf="trainingSets.length > 0" class="mb-3">
+                <div *ngFor="let t of trainingSets">
+                    <div *ngIf="trainingSets.length > 0" class="row justify-content-between">
+                    </div>
+                    
+                 </div>                 
+             </div>   
+             <div *ngIf="isSuccessMsg" class="alert alert-success" role="alert">
+                Training has been added succesfully!
+              </div>
+              <div *ngIf="isErrorMsg" class="alert alert-danger" role="alert">
+                An error occured!
+              </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" #closeBtn id="closeBtn" name="closeBtn" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button (click) = "onSubmit()" [disabled]="!form.valid" type="button" class="btn btn-primary">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
