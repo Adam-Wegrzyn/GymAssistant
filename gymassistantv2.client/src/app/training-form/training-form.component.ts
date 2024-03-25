@@ -83,9 +83,7 @@ export class TrainingFormComponent implements OnInit {
       this.training.trainingSet[id].reps,
       this.training.trainingSet[id].sets);
     this.training.trainingSet.push(trainingSet)
-    console.log(this.trainingSets)
-
-   
+    console.log(this.trainingSets) 
   }
   showSuccessMessage(): void 
   {
