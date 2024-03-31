@@ -1,1 +1,95 @@
-<p>training-log works!</p>
+    <button (click)="showTrainingSelect()" class="btn btn-primary">Add new training!</button>
+    <div *ngIf="isTrainingSelectVisible">
+        <div *ngFor="let r of trainingsRows" class="row gy-2 mt-2">
+            <div *ngFor="let t of r" class="col-lg-4 col-md-6 col-sm-1">
+                <div (click)="selectTraining(t.id)"  class="card bg-light " style="width: 18rem;">
+                    <div class="card-header d-flex justify-content-between">
+                        <div>
+                            {{t.name}}
+                        </div>
+                      
+                      <div>   
+                      </div>
+        
+                    </div>
+                    <ul *ngFor="let index of [0,1,2,3,4]" class="list-group list-group-flush">
+                      <li *ngIf="t.trainingSet[index] != null"  class="list-group-item">
+                        <div class="d-flex justify-content-between">
+                          <div>
+                            {{t.trainingSet[index].exercise.name}}
+                          </div>
+                          <div>
+                            {{t.trainingSet[index].reps}}x{{t.trainingSet[index].sets}}
+                          </div> 
+                        </div>
+        
+                    </li>
+                    </ul>
+                    <div *ngIf="t.trainingSet.length > 3" class="card-footer bg-transparent border-success align-self-end">
+                            <button class="btn btn-sm btn-link ml-auto" >+ expand</button>
+        </div>
+        
+                  </div>
+            </div>
+        
+        </div>
+
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-sm-12 col-lg-6 col-md-7">
+            <div *ngIf="isSelectedTrainingShown"  class="card bg-light">
+            <div class="card-header d-flex justify-content-between">
+                <div>
+                    {{selectedTraining?.name}}
+                </div>
+              
+              <div>   
+              </div>
+
+            </div>
+            <ul *ngFor="let t of selectedTraining?.trainingSet" class="list-group list-group-flush mb-2">
+                <li class="list-group-item bg-primary text-white">
+                <div class="d-flex justify-content-between ">
+                  <div>
+                    {{t.exercise.name}}
+                  </div>
+                  <div>
+                    {{t.reps}}x{{t.sets}} 
+                  </div> 
+                </div>        
+            </li>
+            <li *ngFor="let s of [].constructor(t.sets); let i = index;" class="list-group-item">
+                <div class="d-flex justify-content-between">
+                </div>
+                <div class="row">
+                    <div class="col-1">
+                        
+                        <label class="">{{i+1}}</label>
+                    </div>
+                    <div class="col">
+                        
+                        <div class="input-group">                            
+                             <input type="text" class="form-control" id="weightInput">
+                            <label class="input-group-text" for="weightInput">kg</label>
+                        </div>
+                    </div>
+                    <div class="col">                        
+                        <div class="input-group">
+                        <select id="repsSelect" class="form-select"></select>
+                        <label class="input-group-text" for="repsSelect">reps</label>
+                    </div></div>
+                </div>
+
+
+            </li>
+            <li class="list-group-item">
+                <div class="form-group">
+                    <button (click)="addSet(t.id)" class="btn btn-sm btn-primary form-control">+ add new set</button>
+                </div>
+                
+            </li>
+            </ul>       
+          </div></div>
+    </div>
+  

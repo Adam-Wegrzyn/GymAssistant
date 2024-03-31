@@ -3,7 +3,7 @@
         <button #submitBtn type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#trainingForm0">
             Add new training
           </button>
-        <app-training-form [training]="training"></app-training-form>
+        <app-training-form (refreshView)="initTrainings()" [isEditMode]="false" [training]="training"></app-training-form>
     </div>
 
       
@@ -20,7 +20,7 @@
                 <button style="border:none;" type="button" data-bs-toggle="modal" attr.data-bs-target="#trainingForm{{t.id}}">
                   <fa-icon class="m-2 text-primary" [icon]="faPen"></fa-icon>                 
                 </button>      
-                <app-training-form [training]="t"></app-training-form>          
+                <app-training-form (refreshView)="initTrainings()" [isEditMode]="true" [training]="t"></app-training-form>          
                 <button style="border:none;"  type="button" data-bs-toggle="modal" attr.data-bs-target="#deletePopUp{{t.id}}">
                   <fa-icon class="text-danger" [icon]="faTrash"></fa-icon>
                 </button>
@@ -51,8 +51,5 @@
 
 </div>
 
-<button style="border:none;" #submitBtn type="button" data-bs-toggle="modal" data-bs-target="#trainingForm66">
-  gr
-</button> 
 
 <app-training-form [training]="training"></app-training-form>

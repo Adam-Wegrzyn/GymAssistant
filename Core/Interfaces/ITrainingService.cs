@@ -11,6 +11,6 @@ namespace GymAssistantv2.Server.Controllers
         Task DeleteTraining(int id, CancellationToken cancellationToken);
         Task <List<ExerciseDto>> GetAllExercises(CancellationToken cancellationToken);
         Task <List<TrainingDto>> GetAllTrainings(CancellationToken cancellationToken);
-        
+        Task UpdateTraining(TrainingDto trainingDto, CancellationToken cancellationToken);
     }
 }

@@ -1,4 +1,5 @@
-﻿using Data.Common.DTO;
+﻿using AutoMapper;
+using Data.Common.DTO;
 using DataAccess.Entities;
 using GymAssistantv2.Server.Controllers;
 using Microsoft.VisualBasic;
@@ -9,42 +10,23 @@ namespace Core.Service
     public class TrainingService : ITrainingService
     {
         private readonly ITrainingRepository _trainingRepository;
+        private readonly IMapper _mapper;
 
-        public TrainingService(ITrainingRepository trainingRepository)
+        public TrainingService(ITrainingRepository trainingRepository, IMapper mapper)
         {
             _trainingRepository = trainingRepository;
+            _mapper = mapper;
         }
         public async Task AddExercise(ExerciseDto exerciseDto, CancellationToken cancellationToken)
         {
-            var exercise = new Exercise();
-            exercise.Id = exerciseDto.Id;
-            exercise.Name = exerciseDto.Name;
+            var exercise = _mapper.Map<ExerciseDto, Exercise>(exerciseDto);
             await _trainingRepository.AddExercise(exercise, cancellationToken);
         }
 
         public async Task AddTraining(TrainingDto trainingDto, CancellationToken cancellationToken)
         {
-            var training = new Training
-            {
-                Name = trainingDto.Name,
-                TrainingSet = new List<TrainingSet>()
-                
-            };
+            var training = _mapper.Map<TrainingDto, Training>(trainingDto);
 
-            foreach (var t in trainingDto.TrainingSet)
-            {
-                var trainingSet = new TrainingSet
-                {
-                    Exercise = new Exercise(),
-                    Reps = t.Reps,
-                    Sets = t.Sets,
-                    Weight = t.Weight
-                };
-                trainingSet.Exercise.Name = t.Exercise.Name;
-                trainingSet.Exercise.Id = t.Exercise.Id;
-                training.TrainingSet.Add(trainingSet);               
-                
-            }
             await _trainingRepository.AddTraining(training, cancellationToken);
         }
 
@@ -62,44 +44,21 @@ namespace Core.Service
         {
             
             var exercises = await _trainingRepository.GetAllExercises(cancellationToken);
-            var exercisesDto = new List<ExerciseDto>();
-            foreach (var exercise in exercises)
-            {
-                var ex = new ExerciseDto();
-                ex.Name = exercise.Name;
-                ex.Id = exercise.Id;
-                exercisesDto.Add(ex);
-            }
+            var exercisesDto = _mapper.Map<List<Exercise>, List<ExerciseDto>>(exercises);
             return exercisesDto;
         }
 
         public async Task<List<TrainingDto>> GetAllTrainings(CancellationToken cancellationToken)
         {
             var trainings = await _trainingRepository.GetAllTrainings(cancellationToken);
-            var trainingsDto = new List<TrainingDto>();
-            foreach (var training in trainings)
-            {
-                var trainingDto = new TrainingDto();
-                trainingDto.Name = training.Name;
-                trainingDto.Id = training.Id;
-                trainingDto.TrainingSet = [];
-                
-                foreach(var tSet in training.TrainingSet)
-                {
-                    var trainingSet = new TrainingSetDto();
-                    trainingSet.Id = tSet.Id;
-                    trainingSet.Reps = tSet.Reps;
-                    trainingSet.Sets = tSet.Sets;
-                    trainingSet.Weight  = tSet.Weight;
-                    trainingSet.Exercise = new ExerciseDto { Id = tSet.Exercise.Id, Name =  tSet.Exercise.Name };
-
-                    trainingDto.TrainingSet.Add(trainingSet);
-
-
-                }
-                trainingsDto.Add(trainingDto);
-            }
+            var trainingsDto = _mapper.Map<List<Training>, List<TrainingDto>>(trainings);
             return trainingsDto;
+        }
+
+        public async Task UpdateTraining(TrainingDto training, CancellationToken cancellationToken)
+        {
+            var trainingToUpdate = _mapper.Map<TrainingDto, Training>(training);
+            await _trainingRepository.UpdateTraining(trainingToUpdate, cancellationToken);
         }
     }
 }

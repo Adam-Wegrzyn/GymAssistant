@@ -27,6 +27,7 @@ export class MyTrainingsComponent implements OnInit {
   trainingsRows: any = [[]];
   faPen = faPen;
   faTrash = faTrash;
+  isFormEdit: boolean;
 
   constructor(private trainingService: TrainingService) {
 
@@ -34,10 +35,10 @@ export class MyTrainingsComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.bindTrainings();
+    this.initTrainings();
   }
 
-  private bindTrainings() {
+  public initTrainings() {
     this.trainingService.GetAllTrainings().subscribe(
       (res) => this.trainings = res,
       (err) => console.log(err),
@@ -62,7 +63,7 @@ export class MyTrainingsComponent implements OnInit {
     this.trainingService.DeleteTraining(training.id).subscribe(
       () => {},
       (err) => console.log(err),
-      () => this.bindTrainings()
+      () => this.initTrainings()
     );
   }
 

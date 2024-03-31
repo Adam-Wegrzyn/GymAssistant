@@ -12,5 +12,6 @@ namespace Core.Service
         Task DeleteTraining(int id, CancellationToken cancellationToken);
         Task<List<Exercise>> GetAllExercises(CancellationToken cancellationToken);
         Task<List<Training>> GetAllTrainings(CancellationToken cancellationToken);
+        Task UpdateTraining(Training trainingToUpdate, CancellationToken cancellationToken);
     }
 }

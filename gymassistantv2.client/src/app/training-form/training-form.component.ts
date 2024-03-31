@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Training } from '../domain/Training';
 import { CommonModule } from '@angular/common';
@@ -16,11 +16,12 @@ import { Exercise } from '../domain/Exercise';
 })
 export class TrainingFormComponent implements OnInit {
   @Input() training = new Training();
+  @Input() isEditMode: boolean;
+  @Output() refreshView: EventEmitter<any> = new EventEmitter();
   @ViewChild('closeBtn') closeBtn: ElementRef;
   @ViewChild('form') form: NgForm;
   @ViewChild('notificationSubmit') notificationSubmit: ElementRef;
 
- // const btnClose: HTMLButtonElement | null = document.querySelector('btnClose');
   reps: number[] = [];
   weightDecimal: number[] = [];
   weight: Weight = new Weight();
@@ -32,14 +33,29 @@ export class TrainingFormComponent implements OnInit {
   submitMessage: string;
   isSuccessMsg: boolean = false;
   isErrorMsg: boolean = false;
+  isSuccessMsgEdit: boolean = false;
+  isErrorMsgEdit: boolean = false;
+  //needed to have independent ngModel
+  trainingToEdit: Training;
+  header: string;
+  
 
   constructor(private trainingService: TrainingService){
 
   }
 
   ngOnInit(): void {
+    this.trainingToEdit = JSON.parse(JSON.stringify(this.training));
     this.trainingService.GetAllExercises().subscribe( (res) =>  this.exercises = res );
     this.initDropDowns();
+
+    if(this.isEditMode){
+      this.header = "Edit training";
+    }
+    else{
+      this.header = "Add new training"
+    }
+    
   }
 
   private initDropDowns() {
@@ -52,21 +68,27 @@ export class TrainingFormComponent implements OnInit {
     for (let i = 1; i < 100; i++) {
       this.sets.push(i);
     }
-    // if(this.training.id == 0) this.training.trainingSet = [new TrainingSet(new Exercise())];
     
     
   }
 
   onSubmit(){
-   // this.training.trainingSet = this.trainingSets;
-    this.trainingService.AddTraining(this.training).subscribe(
-      () => this.showSuccessMessage(),
-      (err) => this.showErrorMessage(),
-      () => {
-      this.form.reset();
-      this.trainingSets = [];
-      }
-    );
+    if(this.isEditMode){
+      this.trainingService.UpdateTraining(this.trainingToEdit).subscribe(
+        () => this.showSuccessMessageEdit(),
+        (err) => this.showErrorMessage()
+      );
+    }
+    else{
+      this.trainingService.AddTraining(this.trainingToEdit).subscribe(
+        () =>this.showSuccessMessage(),
+        (err) => this.showErrorMessage(),
+        () => {
+        this.form.reset();
+        this.trainingSets = [];
+        }
+      );
+    }
 
     
 
@@ -76,15 +98,15 @@ export class TrainingFormComponent implements OnInit {
   }
 
   addExercise() {
-    let id = this.training.trainingSet[this.training.trainingSet.length - 1].id;
-    console.log(this.exercise)
-    var trainingSet = new TrainingSet(
-      this.training.trainingSet[id].exercise,
-      this.training.trainingSet[id].reps,
-      this.training.trainingSet[id].sets);
-    this.training.trainingSet.push(trainingSet)
-    console.log(this.trainingSets) 
+    var trainingSet = new TrainingSet();
+    this.trainingToEdit.trainingSet.push(trainingSet)
+
   }
+
+  deleteExercise(index: number){
+    this.trainingToEdit.trainingSet.splice(index,1);
+  }
+
   showSuccessMessage(): void 
   {
     this.isSuccessMsg = true;
@@ -95,6 +117,15 @@ export class TrainingFormComponent implements OnInit {
   {
     this.isErrorMsg = true;
     this.isSuccessMsg = false;
+  }
+  showSuccessMessageEdit(): void 
+  {
+    this.isSuccessMsgEdit = true;
+    this.isErrorMsgEdit = false;
+  }
+
+  closeForm(): void{
+    this.refreshView.emit();
   }
 }
 

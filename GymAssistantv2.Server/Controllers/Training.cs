@@ -71,5 +71,13 @@ namespace GymAssistantv2.Server.Controllers
             await _trainingService.DeleteExercise(id, cancellationToken);
             return Ok();
         }
+
+        [HttpPost]
+        [Route("updateTraining")]
+        public async Task<IActionResult> UpdateTraining([FromBody] TrainingDto trainingDto, CancellationToken cancellationToken)
+        {
+            await _trainingService.UpdateTraining(trainingDto, cancellationToken);
+            return Ok();
+        }
     }
 }

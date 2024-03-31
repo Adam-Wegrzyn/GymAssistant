@@ -24,6 +24,11 @@ namespace DataAccess.Repository
            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
+        public async Task<Exercise> GetExercise(int id, CancellationToken cancellationToken)
+        {
+            return await _dbContext.Exercises.Where(e => e.Id == id).FirstOrDefaultAsync(cancellationToken);
+        }
+
         public async Task AddTraining(Training training, CancellationToken cancellationToken)
         {
             _dbContext.Trainings.Add(training);
@@ -34,6 +39,11 @@ namespace DataAccess.Repository
             }
             
             await _dbContext.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<Training> GetTraining(int id, CancellationToken cancellationToken)
+        {
+            return await _dbContext.Trainings.Where(e => e.Id == id).FirstOrDefaultAsync(cancellationToken);
         }
 
         public async Task DeleteExercise(int id, CancellationToken cancellationToken)
@@ -72,6 +82,17 @@ namespace DataAccess.Repository
                 .Include(t => t.TrainingSet)
                 .ThenInclude(e => e.Exercise)
                 .ToListAsync(cancellationToken);
+        }
+
+        public async Task UpdateTraining(Training training, CancellationToken cancellationToken)
+        {
+            var trainingToUpdate = await GetTraining(training.Id, cancellationToken); 
+            if (trainingToUpdate != null)
+            {
+                trainingToUpdate.Name = training.Name;
+                trainingToUpdate.TrainingSet = training.TrainingSet;
+            }
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
     }
 }

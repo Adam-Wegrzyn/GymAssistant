@@ -16,7 +16,7 @@ export class TrainingService{
         return this.http.delete<Exercise>(this.apiUrl + 'Training/DeleteTraining/' + id)
     }
     public DeleteExercise(id: number) {
-      return this.http.delete<Exercise>(this.apiUrl + 'Training/DeleteExercise/' + id)
+        return this.http.delete<Exercise>(this.apiUrl + 'Training/DeleteExercise/' + id)
     }
 
     public GetAllTrainings(): Observable<Training[]>{
@@ -31,5 +31,8 @@ export class TrainingService{
     }
     public AddExercise(exercise: Exercise): Observable<Exercise>{
         return this.http.post<Exercise>(this.apiUrl + 'Training/addExercise', exercise)
-    }   
+    }
+    public UpdateTraining(training: Training) {
+        return this.http.post<Training>(this.apiUrl + 'Training/UpdateTraining', training);
+      }   
 }
