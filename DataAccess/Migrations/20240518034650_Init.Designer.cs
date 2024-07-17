@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(GymAssistantDbContext))]
-    [Migration("20240324081656_AddedSetsToTrainingSet")]
-    partial class AddedSetsToTrainingSet
+    [Migration("20240518034650_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -88,16 +88,7 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ExerciseId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Reps")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Sets")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TrainingId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Weight")
@@ -106,11 +97,35 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.ToTable("TrainingSets");
+                });
+
+            modelBuilder.Entity("DataAccess.Entities.TrainingSetExercise", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ExerciseId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TrainingId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TrainingSetId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
                     b.HasIndex("ExerciseId");
 
                     b.HasIndex("TrainingId");
 
-                    b.ToTable("TrainingSets");
+                    b.HasIndex("TrainingSetId");
+
+                    b.ToTable("TrainingSetsExercises");
                 });
 
             modelBuilder.Entity("DataAccess.Entities.TrainingLog", b =>
@@ -124,7 +139,7 @@ namespace DataAccess.Migrations
                     b.Navigation("Training");
                 });
 
-            modelBuilder.Entity("DataAccess.Entities.TrainingSet", b =>
+            modelBuilder.Entity("DataAccess.Entities.TrainingSetExercise", b =>
                 {
                     b.HasOne("DataAccess.Entities.Exercise", "Exercise")
                         .WithMany()
@@ -132,20 +147,24 @@ namespace DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DataAccess.Entities.Training", "Training")
-                        .WithMany("TrainingSet")
-                        .HasForeignKey("TrainingId")
+                    b.HasOne("DataAccess.Entities.Training", null)
+                        .WithMany("TrainingSetExercise")
+                        .HasForeignKey("TrainingId");
+
+                    b.HasOne("DataAccess.Entities.TrainingSet", "TrainingSet")
+                        .WithMany()
+                        .HasForeignKey("TrainingSetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Exercise");
 
-                    b.Navigation("Training");
+                    b.Navigation("TrainingSet");
                 });
 
             modelBuilder.Entity("DataAccess.Entities.Training", b =>
                 {
-                    b.Navigation("TrainingSet");
+                    b.Navigation("TrainingSetExercise");
                 });
 #pragma warning restore 612, 618
         }

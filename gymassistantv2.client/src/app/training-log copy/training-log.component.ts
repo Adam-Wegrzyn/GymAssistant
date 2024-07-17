@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Pipe } from '@angular/core';
 import { TrainingService } from '../services/training-service';
 import { Training } from '../domain/Training';
 import { TrainingSet } from '../domain/TrainingSet';
+import { groupBy } from 'lodash-es';
+import { GroupByPipe } from './group-by.pipe';
 
 @Component({
   selector: 'app-training-log',
@@ -16,15 +18,30 @@ export class TrainingLogComponent implements OnInit {
 
     //testing purposes
     this.initTrainings();
+   // this.initDropDowns();
     
     this.isSelectedTrainingShown = true;
   }
+  // private initDropDowns() {
+  //   this.trainingSet.reps = 1;
+  //   for (let i = 1; i <= 100; i++) {
+  //     this.reps.push(i);
+  //   }
+
+  //   this.trainingSet.sets = 1;
+  //   for (let i = 1; i < 100; i++) {
+  //     this.sets.push(i);
+  //   }
+  // }
 
   selectedTraining: Training | undefined;
   trainings: Training[];
   trainingsRows: any = [[]];
   isTrainingSelectVisible: boolean = false;
   isSelectedTrainingShown: boolean = false;
+  exercises: any[];
+  groupByPipe: GroupByPipe;
+
 
   showTrainingSelect(){
     this.initTrainings();
@@ -38,6 +55,7 @@ export class TrainingLogComponent implements OnInit {
         this.createTrainingRows()
         //testing purposes
         this.selectedTraining = this.trainings.find(t => t.id == 66);
+        console.log(this.selectedTraining)
       }
     );
   }
@@ -61,6 +79,7 @@ export class TrainingLogComponent implements OnInit {
   showTrainingLog(id: number) {
     if(this.trainings.find(t => t.id == id) !== undefined){
       this.selectedTraining = this.trainings.find(t => t.id == id);
+      
     }
     else{
       throw console.error("This training doesn't exist!");
@@ -71,7 +90,7 @@ export class TrainingLogComponent implements OnInit {
   }
 
   addSet(id: number){
-    this.selectedTraining?.trainingSet.push(new TrainingSet())
+   // this.selectedTraining?.trainingSet.push(new TrainingSet())
 
   }
 

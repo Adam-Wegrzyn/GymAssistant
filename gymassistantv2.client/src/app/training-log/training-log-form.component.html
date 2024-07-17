@@ -1,0 +1,74 @@
+    <form [formGroup]="form">
+    
+    <div class="row justify-content-center">
+        <div class="col-sm-12 col-lg-6 col-md-7">
+            <div class="card bg-light">
+            <div class="card-header d-flex justify-content-between" formgGroup="">
+                <div>
+                    {{selectedTraining?.name}}
+                </div>             
+              <div>
+              </div>
+            </div>
+            <div>
+                <div *ngFor="let trEx of trainingSetExerciseArr.controls; let j = index;" class="list-group list-group-flush mb-2" formArrayName="trainingSetExercise">
+                   
+                    <ng-container formGroupName = {{j}}>
+                        <div  class="list-group-item bg-primary text-white">
+                            <span>{{trainingSetExerciseArr.controls[j].get('exercise')?.value['name']}}</span> 
+                           <input hidden readonly formControlName="exercise" value="{{trainingSetExerciseArr.controls[j].get('exercise.name')?.value['name']}}">
+                    </div>
+
+<div *ngFor="let s of getTrainingSetArr(j).controls; let i = index;" formArrayName="trainingSets">
+                <div class="list-group-item">
+                    <div class="row" formGroupName="{{i}}">
+                        <div class="col-1">
+                            <label class="">{{i+1}}</label>
+                        </div>
+                        <div class="col">
+                            <div class="input-group">                            
+                                 <input formControlName="weight" value="" type="text" class="form-control"  id="weightInput">
+                                <label name="weightInput"  class="input-group-text" for="weightInput">kg</label>
+                            </div>
+                        </div>
+                        <div class="col">                        
+                            <div class="input-group">
+                            <select formControlName="reps" id="repsSelect" class="form-select">
+                                <option *ngFor="let v of repsDropDown" [ngValue]="v">
+                                    {{v}}
+                                </option>
+                            </select>
+                            
+                            <label class="input-group-text" for="repsSelect">reps</label>
+                        </div>
+                    </div>
+                    <div class="col-1">
+                        <button class="btn btn-danger" (click)="deleteSet(j, i)">-</button>
+                    </div>
+                    </div>
+    
+    
+                </div>
+
+                </div>
+            </ng-container>
+            <div class="col-2 offset-5">
+                <div class="form-group">
+                    <button (click)="addSet(j)" class="btn btn-sm btn-success form-control">+</button>
+                </div>
+                
+            </div>
+            </div>     
+            </div>           
+          </div>
+          <button class="btn btn-success" (click)="addExercise()">add exercise</button>
+        </div>
+          
+    </div>
+    <div class="row">
+        <div class="col-2 offset-10">
+            <button type="submit" class="btn btn-primary" (click)="onSubmit()">save</button>
+        </div>
+        
+    </div>
+  </form>

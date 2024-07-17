@@ -17,6 +17,7 @@ namespace Core
             CreateMap<TrainingDto, Training>().ReverseMap();
             CreateMap<TrainingLogDto, TrainingLog>().ReverseMap();
             CreateMap<TrainingSetDto, TrainingSet>().ReverseMap();
+            CreateMap<TrainingSetExerciseDto, TrainingSetExercise>().ReverseMap();
         }
 
 

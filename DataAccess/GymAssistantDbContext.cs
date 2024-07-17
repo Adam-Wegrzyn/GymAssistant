@@ -20,6 +20,7 @@ namespace DataAccess
         public DbSet<TrainingLog> TrainingLogs { get; set; }
         public DbSet<TrainingSet> TrainingSets { get; set; }
         public DbSet<Training> Trainings { get; set; }
+        public DbSet<TrainingSetExercise> TrainingSetsExercises { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

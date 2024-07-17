@@ -99,12 +99,12 @@ export class TrainingFormComponent implements OnInit {
 
   addExercise() {
     var trainingSet = new TrainingSet();
-    this.trainingToEdit.trainingSet.push(trainingSet)
+    // this.trainingToEdit.trainingSet.push(trainingSet)
 
   }
 
   deleteExercise(index: number){
-    this.trainingToEdit.trainingSet.splice(index,1);
+    // this.trainingToEdit.trainingSet.splice(index,1);
   }
 
   showSuccessMessage(): void 

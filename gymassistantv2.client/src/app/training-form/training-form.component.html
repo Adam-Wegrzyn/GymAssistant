@@ -1,4 +1,4 @@
-<div class="modal fade" id="trainingForm{{training.id}}"  tabindex="-1" aria-labelledby="trainingFormLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="trainingForm{{training.id}}"  tabindex="-1" aria-labelledby="trainingFormLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -16,8 +16,8 @@
             
                 </div>
                 
-                <div *ngFor="let t of trainingToEdit.trainingSet; let i = index;" class="row mt-2">
-                    <div class="col-auto">
+                <div *ngFor="let t of trainingToEdit.trainingSetGroup; let i = index;" class="row mt-2">
+                    <div class="col">
                         <label *ngIf="i == 0" class="form-label" for="exerciseSelect0">Exercise</label>
                         <div class="form-group">          
                             <select name="exerciseSelect{{i}}" class="form-select" #exerciseSelect [(ngModel)]="trainingToEdit.trainingSet[i].exercise" >
@@ -28,7 +28,6 @@
                             </select>
                         </div>            
                     </div>
-                    <div class="col-auto">
                         <label *ngIf="i == 0" class="form-label" for="reps0">Reps</label>
                         <div class="form-group">                           
                             <select name="reps{{i}}" class="form-select" [(ngModel)]="trainingToEdit.trainingSet[i].reps">
@@ -52,10 +51,10 @@
                         </div>
                     <div *ngIf="i > 0" class="col-auto">
                         <button name="addBtn" class="btn btn-warning" (click)="deleteExercise(i)">-</button>
-                    </div>    
+                    </div>     -->
                
             
-                </div>
+                <!-- </div>
                 <div class="align-bottom mt-2 mb-2">
                     <button name="addBtn" class="btn btn-success" (click)="addExercise()">add new exercise</button>
                 </div>
@@ -83,4 +82,4 @@
         </div>
       </div>
     </div>
-  </div>
+  </div>  -->

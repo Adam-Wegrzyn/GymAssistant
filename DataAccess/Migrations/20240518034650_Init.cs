@@ -38,6 +38,20 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TrainingSets",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Reps = table.Column<int>(type: "int", nullable: false),
+                    Weight = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TrainingSets", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TrainingLogs",
                 columns: table => new
                 {
@@ -58,31 +72,35 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TrainingSets",
+                name: "TrainingSetsExercises",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ExerciseId = table.Column<int>(type: "int", nullable: false),
-                    Reps = table.Column<int>(type: "int", nullable: false),
-                    Weight = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: false),
-                    TrainingId = table.Column<int>(type: "int", nullable: false)
+                    TrainingSetId = table.Column<int>(type: "int", nullable: false),
+                    TrainingId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TrainingSets", x => x.Id);
+                    table.PrimaryKey("PK_TrainingSetsExercises", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TrainingSets_Exercises_ExerciseId",
+                        name: "FK_TrainingSetsExercises_Exercises_ExerciseId",
                         column: x => x.ExerciseId,
                         principalTable: "Exercises",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_TrainingSets_Trainings_TrainingId",
-                        column: x => x.TrainingId,
-                        principalTable: "Trainings",
+                        name: "FK_TrainingSetsExercises_TrainingSets_TrainingSetId",
+                        column: x => x.TrainingSetId,
+                        principalTable: "TrainingSets",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TrainingSetsExercises_Trainings_TrainingId",
+                        column: x => x.TrainingId,
+                        principalTable: "Trainings",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -91,14 +109,19 @@ namespace DataAccess.Migrations
                 column: "TrainingId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TrainingSets_ExerciseId",
-                table: "TrainingSets",
+                name: "IX_TrainingSetsExercises_ExerciseId",
+                table: "TrainingSetsExercises",
                 column: "ExerciseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TrainingSets_TrainingId",
-                table: "TrainingSets",
+                name: "IX_TrainingSetsExercises_TrainingId",
+                table: "TrainingSetsExercises",
                 column: "TrainingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TrainingSetsExercises_TrainingSetId",
+                table: "TrainingSetsExercises",
+                column: "TrainingSetId");
         }
 
         /// <inheritdoc />
@@ -108,10 +131,13 @@ namespace DataAccess.Migrations
                 name: "TrainingLogs");
 
             migrationBuilder.DropTable(
-                name: "TrainingSets");
+                name: "TrainingSetsExercises");
 
             migrationBuilder.DropTable(
                 name: "Exercises");
+
+            migrationBuilder.DropTable(
+                name: "TrainingSets");
 
             migrationBuilder.DropTable(
                 name: "Trainings");

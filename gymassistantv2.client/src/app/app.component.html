@@ -2,7 +2,7 @@
     <ul id="navbar">
         <li><a href="#">Home</a></li>
         <li><a routerLink="my-trainings">My Trainings</a></li>
-        <li><a routerLink="training-log">Training Log</a></li>
+        <li><a [routerLink]="['/training-log-form']" [queryParams]="{id: 1}">Training Log</a></li>
         <li><a routerLink="all-exercises">All exercises</a></li>
         <li><a routerLink="add-exercise">Add exercise</a></li>
     </ul>

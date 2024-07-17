@@ -42,7 +42,7 @@ namespace Core.Service
 
         public async Task<List<ExerciseDto>> GetAllExercises(CancellationToken cancellationToken)
         {
-            
+
             var exercises = await _trainingRepository.GetAllExercises(cancellationToken);
             var exercisesDto = _mapper.Map<List<Exercise>, List<ExerciseDto>>(exercises);
             return exercisesDto;
@@ -50,14 +50,17 @@ namespace Core.Service
 
         public async Task<List<TrainingDto>> GetAllTrainings(CancellationToken cancellationToken)
         {
+
             var trainings = await _trainingRepository.GetAllTrainings(cancellationToken);
             var trainingsDto = _mapper.Map<List<Training>, List<TrainingDto>>(trainings);
-            return trainingsDto;
+            var t = _mapper.Map<TrainingSetExercise, TrainingSetExerciseDto>(trainings.First().TrainingSetExercise.First());
+           return trainingsDto;
         }
 
-        public async Task UpdateTraining(TrainingDto training, CancellationToken cancellationToken)
-        {
-            var trainingToUpdate = _mapper.Map<TrainingDto, Training>(training);
+        public async Task UpdateTraining(TrainingDto trainingDto, CancellationToken cancellationToken)
+        {          
+            var trainingToUpdate = _mapper.Map<TrainingDto, Training>(trainingDto);
+
             await _trainingRepository.UpdateTraining(trainingToUpdate, cancellationToken);
         }
     }

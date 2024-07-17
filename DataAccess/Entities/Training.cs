@@ -3,6 +3,6 @@
     public class Training: BaseEntity
     {
         public string Name { get; set; }
-        public ICollection<TrainingSet> TrainingSet { get; set; }
+        public ICollection<TrainingSetExercise> TrainingSetExercise { get; set; }
     }
 }

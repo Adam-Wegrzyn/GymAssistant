@@ -32,18 +32,26 @@ namespace DataAccess.Repository
         public async Task AddTraining(Training training, CancellationToken cancellationToken)
         {
             _dbContext.Trainings.Add(training);
-            var exercisesToAttach = training.TrainingSet.Select(t => t.Exercise);
-            foreach (var t in exercisesToAttach)
-            {
-                _dbContext.Exercises.Attach(t);
-            }
+            //var exercisesToAttach = training.TrainingSet.Select(t => t.Exercise);
+            //foreach (var t in exercisesToAttach)
+            //{
+            //    _dbContext.Exercises.Attach(t);
+            //}
             
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
         public async Task<Training> GetTraining(int id, CancellationToken cancellationToken)
         {
-            return await _dbContext.Trainings.Where(e => e.Id == id).FirstOrDefaultAsync(cancellationToken);
+#pragma warning disable CS8603 // Possible null reference return.
+            return await _dbContext.Trainings
+                .Include(t => t.TrainingSetExercise)
+                                    .ThenInclude(e => e.Exercise).AsNoTracking()
+                .Include(t => t.TrainingSetExercise)
+                    .ThenInclude(t => t.TrainingSets)
+                .Where(e => e.Id == id).FirstOrDefaultAsync(cancellationToken)
+          ;
+#pragma warning restore CS8603 // Possible null reference return.
         }
 
         public async Task DeleteExercise(int id, CancellationToken cancellationToken)
@@ -79,19 +87,29 @@ namespace DataAccess.Repository
         public async Task<List<Training>> GetAllTrainings(CancellationToken cancellationToken)
         {
             return await _dbContext.Trainings
-                .Include(t => t.TrainingSet)
-                .ThenInclude(e => e.Exercise)
+                .Include(t => t.TrainingSetExercise)
+                    .ThenInclude(e => e.Exercise)
+                .Include(t => t.TrainingSetExercise)
+                    .ThenInclude(t => t.TrainingSets)
                 .ToListAsync(cancellationToken);
         }
+
 
         public async Task UpdateTraining(Training training, CancellationToken cancellationToken)
         {
             var trainingToUpdate = await GetTraining(training.Id, cancellationToken); 
             if (trainingToUpdate != null)
             {
-                trainingToUpdate.Name = training.Name;
-                trainingToUpdate.TrainingSet = training.TrainingSet;
-            }
+                var t1 = trainingToUpdate.TrainingSetExercise.Select(t => t.TrainingSets.Select(tr => tr.Id));
+                var t2 = training.TrainingSetExercise.Select(t => t.TrainingSets.Select(tr => tr.Id));
+                var deleteIds = t1.SelectMany(t => t).Except(t2.SelectMany(t => t));
+                var toDelete = trainingToUpdate.TrainingSetExercise.SelectMany(t => t.TrainingSets).Where(t => deleteIds.Contains(t.Id)).ToList();
+                toDelete.ForEach(t => _dbContext.Entry(t).State = EntityState.Deleted);
+
+                trainingToUpdate.TrainingSetExercise = training.TrainingSetExercise;
+                _dbContext.Update(trainingToUpdate);
+                
+           }
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
     }

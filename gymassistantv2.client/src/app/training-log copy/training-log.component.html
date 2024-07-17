@@ -42,41 +42,33 @@
             <div class="card-header d-flex justify-content-between">
                 <div>
                     {{selectedTraining?.name}}
-                </div>
-              
+                </div>             
               <div>   
               </div>
-
             </div>
-            <ul *ngFor="let t of selectedTraining?.trainingSet" class="list-group list-group-flush mb-2">
+            <ul *ngFor="let t of selectedTraining?.trainingSetExercise" class="list-group list-group-flush mb-2">
                 <li class="list-group-item bg-primary text-white">
-                <div class="d-flex justify-content-between ">
-                  <div>
-                    {{t.exercise.name}}
-                  </div>
-                  <div>
-                    {{t.reps}}x{{t.sets}} 
-                  </div> 
-                </div>        
+                    {{t.exerciseName}}
             </li>
-            <li *ngFor="let s of [].constructor(t.sets); let i = index;" class="list-group-item">
+            <li *ngFor="let s of t.trainingSets; let i = index;" class="list-group-item">
                 <div class="d-flex justify-content-between">
                 </div>
                 <div class="row">
                     <div class="col-1">
-                        
                         <label class="">{{i+1}}</label>
                     </div>
                     <div class="col">
-                        
                         <div class="input-group">                            
-                             <input type="text" class="form-control" id="weightInput">
-                            <label class="input-group-text" for="weightInput">kg</label>
+                             <input value="{{s.weight}}" type="text" class="form-control" id="weightInput">
+                            <label name="weightInput"  class="input-group-text" for="weightInput">kg</label>
                         </div>
                     </div>
                     <div class="col">                        
                         <div class="input-group">
-                        <select id="repsSelect" class="form-select"></select>
+                        <select id="repsSelect" class="form-select">
+                            <option>{{s.reps}}</option>
+                        </select>
+                        
                         <label class="input-group-text" for="repsSelect">reps</label>
                     </div></div>
                 </div>
@@ -85,7 +77,7 @@
             </li>
             <li class="list-group-item">
                 <div class="form-group">
-                    <button (click)="addSet(t.id)" class="btn btn-sm btn-primary form-control">+ add new set</button>
+                    <!-- <button (click)="addSet(t.id)" class="btn btn-sm btn-primary form-control">+ add new set</button> -->
                 </div>
                 
             </li>
