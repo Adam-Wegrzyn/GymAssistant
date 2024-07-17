@@ -8,6 +8,7 @@ namespace Data.Common.DTO
 {
     public class BaseDto
     {
+        //tst 
         public int Id { get; set; } 
     }
 }
