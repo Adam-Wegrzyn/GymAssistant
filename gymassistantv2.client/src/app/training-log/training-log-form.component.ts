@@ -1,4 +1,4 @@
-import { Component, OnInit, Pipe } from '@angular/core';
+import { Component, ElementRef, OnInit, Pipe, ViewChild } from '@angular/core';
 import { TrainingService } from '../services/training-service';
 import { Training } from '../domain/Training';
 import { TrainingSet } from '../domain/TrainingSet';
@@ -8,18 +8,22 @@ import { ActivatedRoute } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { trainingSetExercise } from '../domain/trainingSetExercise';
 import { Weight } from '../my-trainings/weight';
+import { Exercise } from '../domain/Exercise';
 @Component({
   selector: 'app-training-log-form',
   templateUrl: './training-log-form.component.html',
   styleUrls: ['./training-log-form.component.css']
 })
 export class TrainingLogFormComponent implements OnInit {
+  @ViewChild('modalExercise') modalExercise: ElementRef;
+  @ViewChild('closeBtn') closeBtn: ElementRef;
 
   form: FormGroup;
   selectedTraining: Training | undefined;
   trainings: Training[];
   trainingId: number;
   repsDropDown: number[] = [];
+  exercises: Exercise[];
 
   constructor(private trainingService: TrainingService, private fb: FormBuilder, private route: ActivatedRoute) {
   }
@@ -47,9 +51,10 @@ export class TrainingLogFormComponent implements OnInit {
       }
     )
 
-    
-
-  
+    this.trainingService.GetAllExercises()
+    .subscribe(
+      (res) => this.exercises = res
+    )
   }
 
   initDropDown(){
@@ -106,8 +111,25 @@ export class TrainingLogFormComponent implements OnInit {
   deleteSet(arrId: number, setId){
     this.getTrainingSetArr(arrId).removeAt(setId);
   }
-  addExercise(){
+
+  addExercise(id: string){
     
+    let exercise;
+    this.trainingService.GetExercise(Number(id))
+    .subscribe(
+      (res) => exercise = res,
+      (err) => console.log(err),
+      () => {
+        this.trainingSetExerciseArr.push(this.fb.group({
+          exercise: exercise,
+          trainingSets: this.fb.array([])
+        }))
+      }
+    );
+  }
+
+  deleteExercise(id: number){
+    this.trainingSetExerciseArr.removeAt(id);
   }
 
   onSubmit(){
@@ -115,5 +137,7 @@ export class TrainingLogFormComponent implements OnInit {
     this.form.value['name'] = this.selectedTraining?.name;
 
     this.trainingService.UpdateTraining(this.form.value).subscribe();
+    
   }
+
 }

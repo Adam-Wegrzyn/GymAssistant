@@ -53,8 +53,14 @@ namespace Core.Service
 
             var trainings = await _trainingRepository.GetAllTrainings(cancellationToken);
             var trainingsDto = _mapper.Map<List<Training>, List<TrainingDto>>(trainings);
-            var t = _mapper.Map<TrainingSetExercise, TrainingSetExerciseDto>(trainings.First().TrainingSetExercise.First());
            return trainingsDto;
+        }
+
+        public async Task<ExerciseDto> GetExercise(int id, CancellationToken cancellationToken)
+        {
+            var exercise = await _trainingRepository.GetExercise(id, cancellationToken);
+            return _mapper.Map<Exercise, ExerciseDto>(exercise);
+
         }
 
         public async Task UpdateTraining(TrainingDto trainingDto, CancellationToken cancellationToken)

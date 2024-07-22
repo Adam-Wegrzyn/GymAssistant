@@ -102,9 +102,12 @@ namespace DataAccess.Repository
             {
                 var t1 = trainingToUpdate.TrainingSetExercise.Select(t => t.TrainingSets.Select(tr => tr.Id));
                 var t2 = training.TrainingSetExercise.Select(t => t.TrainingSets.Select(tr => tr.Id));
-                var deleteIds = t1.SelectMany(t => t).Except(t2.SelectMany(t => t));
-                var toDelete = trainingToUpdate.TrainingSetExercise.SelectMany(t => t.TrainingSets).Where(t => deleteIds.Contains(t.Id)).ToList();
-                toDelete.ForEach(t => _dbContext.Entry(t).State = EntityState.Deleted);
+                var deleteExercises = trainingToUpdate.TrainingSetExercise.Select(t => t.Id).Except(training.TrainingSetExercise.Select(t => t.Id));
+                var deleteIdsSets = t1.SelectMany(t => t).Except(t2.SelectMany(t => t));
+                var toDeleteExercise = trainingToUpdate.TrainingSetExercise.Where(t => deleteExercises.Contains(t.Id)).ToList();
+                var toDeleteSets = trainingToUpdate.TrainingSetExercise.SelectMany(t => t.TrainingSets).Where(t => deleteIdsSets.Contains(t.Id)).ToList();
+                toDeleteSets.ForEach(t => _dbContext.Entry(t).State = EntityState.Deleted);
+                toDeleteExercise.ForEach(t => _dbContext.Entry(t).State = EntityState.Deleted);
 
                 trainingToUpdate.TrainingSetExercise = training.TrainingSetExercise;
                 _dbContext.Update(trainingToUpdate);

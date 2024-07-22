@@ -18,6 +18,9 @@
                             <span>{{trainingSetExerciseArr.controls[j].get('exercise')?.value['name']}}</span> 
                            <input hidden readonly formControlName="exercise" value="{{trainingSetExerciseArr.controls[j].get('exercise.name')?.value['name']}}">
                     </div>
+                    <div>
+                        <button class="btn btn-danger" (click)="deleteExercise(j)">-</button>
+                    </div>
 
 <div *ngFor="let s of getTrainingSetArr(j).controls; let i = index;" formArrayName="trainingSets">
                 <div class="list-group-item">
@@ -61,14 +64,38 @@
             </div>     
             </div>           
           </div>
-          <button class="btn btn-success" (click)="addExercise()">add exercise</button>
+          <button class="btn btn-success"
+          data-bs-toggle="modal" data-bs-target="#selectExercise">add exercise</button>
         </div>
           
     </div>
     <div class="row">
         <div class="col-2 offset-10">
-            <button type="submit" class="btn btn-primary" (click)="onSubmit()">save</button>
+            <button type="submit"
+            class="btn btn-primary" (click)="onSubmit()">save</button>
         </div>
         
     </div>
+    <div class="modal fade" #modalExercise id="selectExercise"  tabindex="-1" aria-labelledby="selectExercu=iseLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="trainingFormlLabel">Please select exercise: </h5>
+        </div>
+        <div class="modal-body">
+            <select
+             #selectedExercise id="exerciseSelect" class="form-select">
+                <option *ngFor="let v of exercises" [value]="v.id">
+                    {{v.name}}
+                </option>
+            </select>
+          </div>
+                    <div class="modal-footer">
+                    <button (click)="addExercise(selectedExercise.value)" data-bs-dismiss="modal" class="btn btn-success">select</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+               
+      
   </form>

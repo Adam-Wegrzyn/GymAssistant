@@ -18,7 +18,12 @@ export class TrainingService{
     public DeleteExercise(id: number) {
         return this.http.delete<Exercise>(this.apiUrl + 'Training/DeleteExercise/' + id)
     }
-
+    public GetTraining(id: number) {
+        throw new Error('Method not implemented.');
+    }
+    GetExercise(id: number) {
+        return this.http.get<Training[]> (this.apiUrl + 'Training/getExercise/' + id)
+      }
     public GetAllTrainings(): Observable<Training[]>{
         return this.http.get<Training[]> (this.apiUrl + 'Training/getAllTrainings')
     }

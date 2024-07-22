@@ -25,6 +25,13 @@ namespace GymAssistantv2.Server.Controllers
         {
            var result = await _trainingService.GetAllTrainings(cancellationToken);
             return Ok(result);
+        }        
+        [HttpGet]
+        [Route("getExercise/{id}")]
+        public async Task<IActionResult> GetExercise(int id, CancellationToken cancellationToken)
+        {
+           var result = await _trainingService.GetExercise(id, cancellationToken);
+            return Ok(result);
         }
         [HttpGet]
         [Route("getAllExercises")]
