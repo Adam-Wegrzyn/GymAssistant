@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Entities
 {
-    public class TrainingLog: LogEntity
+    public class TrainingSetExerciseLog: LogEntity
     {
-        public DateTime Date { get; set; }
-        public Training Training { get; set; }
+        public TrainingSetExercise TrainingSetExercise { get; set; }
 
     }
 }

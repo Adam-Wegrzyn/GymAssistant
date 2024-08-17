@@ -1,33 +1,39 @@
     <form [formGroup]="form">
-    
+    {{showTimer}}
     <div class="row justify-content-center">
         <div class="col-sm-12 col-lg-6 col-md-7">
             <div class="card bg-light">
             <div class="card-header d-flex justify-content-between" formgGroup="">
                 <div>
-                    {{selectedTraining?.name}}
+                    <span>{{form.get('name')?.value}}</span>
                 </div>             
               <div>
               </div>
             </div>
             <div>
-                <div *ngFor="let trEx of trainingSetExerciseArr.controls; let j = index;" class="list-group list-group-flush mb-2" formArrayName="trainingSetExercise">
+                <div id="exercise{{j}}" *ngFor="let trEx of trainingSetExerciseArr.controls; let j = index;" class="list-group list-group-flush mb-2" formArrayName="trainingSetExercise">
                    
-                    <ng-container formGroupName = {{j}}>
+                    <ng-container  formGroupName = {{j}}>
                         <div  class="list-group-item bg-primary text-white">
                             <span>{{trainingSetExerciseArr.controls[j].get('exercise')?.value['name']}}</span> 
                            <input hidden readonly formControlName="exercise" value="{{trainingSetExerciseArr.controls[j].get('exercise.name')?.value['name']}}">
                     </div>
                     <div>
+                        <span #showCountSets{{j}} id="showCountSets{{j}}">Completed sets: 0/{{getTrainingSetArr(j).controls.length}}</span>
+                        
                         <button class="btn btn-danger" (click)="deleteExercise(j)">-</button>
                     </div>
 
 <div *ngFor="let s of getTrainingSetArr(j).controls; let i = index;" formArrayName="trainingSets">
                 <div class="list-group-item">
-                    <div class="row" formGroupName="{{i}}">
+                    <div id="setRow{{j}}-{{i}}" class="row" formGroupName="{{i}}">
                         <div class="col-1">
                             <label class="">{{i+1}}</label>
                         </div>
+                        <div class="col-1">                            
+                            <div class="ml-2">
+                            <input id="chkDone{{j}}-{{i}}" (change)="setComplete(j, i)" class="form-check-input chkDone{{j}}" type="checkbox">
+                        </div></div>
                         <div class="col">
                             <div class="input-group">                            
                                  <input formControlName="weight" value="" type="text" class="form-control"  id="weightInput">
@@ -67,12 +73,32 @@
           <button class="btn btn-success"
           data-bs-toggle="modal" data-bs-target="#selectExercise">add exercise</button>
         </div>
+
+
           
+    </div>
+    <div class="row mt-3">
+        <div mt-10 *ngIf="isSuccessMsgEdit" class="alert alert-success" role="alert">
+            Training has been updated succesfully!
+          </div>
+          <div *ngIf="isErrorMsg" class="alert alert-danger" role="alert">
+            An error occured!
+          </div>
     </div>
     <div class="row">
         <div class="col-2 offset-10">
-            <button type="submit"
-            class="btn btn-primary" (click)="onSubmit()">save</button>
+            <div *ngIf="!isActive; else elseBlock">
+                <button type="submit"
+                class="btn btn-primary" (click)="onSubmit()">save</button>
+            </div>
+            <ng-template #elseBlock>
+                <div>
+                    <button type="submit"
+                    class="btn btn-primary" (click)="onSubmit()">complete training</button>
+                </div>
+            </ng-template>
+            <div></div>
+            
         </div>
         
     </div>
@@ -96,6 +122,4 @@
                     </div>
                   </div>
                 </div>
-               
-      
   </form>

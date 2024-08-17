@@ -42,7 +42,10 @@ export class MyTrainingsComponent implements OnInit {
     this.trainingService.GetAllTrainings().subscribe(
       (res) => this.trainings = res,
       (err) => console.log(err),
-      () => this.createTrainingRows()
+      () => {
+        this.createTrainingRows();
+        console.log(this.trainingsRows);
+      } 
     );
   }
 
@@ -67,4 +70,12 @@ export class MyTrainingsComponent implements OnInit {
     );
   }
 
+  calculateRangeOfRepetitions(trainingSets: Array<TrainingSet>): string{
+    let maxNo = Math.max(...trainingSets.map(x => x.reps));
+    let minNo = Math.min(...trainingSets.map(x => x.reps));
+    return maxNo == minNo ? maxNo.toString() : minNo + '-' + maxNo;
+  }
+  startTraining(id: number){
+
+  }
 }

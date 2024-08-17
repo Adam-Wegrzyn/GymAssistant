@@ -1,53 +1,59 @@
 <div class="row">
-    <div class="col-2">
-        <button #submitBtn type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#trainingForm0">
-            Add new training
-          </button>
-        <app-training-form (refreshView)="initTrainings()" [isEditMode]="false" [training]="training"></app-training-form>
-    </div>
+  <div class="col-2">
+    <a [routerLink]="['/training-log-form']" [queryParams]="{id: 0}">
+      <button #submitBtn type="button" class="btn btn-primary">
+        Add new training
+      </button>
+    </a>
+    <app-training-form (refreshView)="initTrainings()" [isEditMode]="false" [training]="training"></app-training-form>
+  </div>
 
-      
+
 </div>
 <div *ngFor="let r of trainingsRows" class="row gy-2 mt-2">
-    <div *ngFor="let t of r" class="col-lg-4 col-md-6 col-sm-1">
-        <div  class="card bg-light " style="width: 18rem;">
-            <div class="card-header d-flex justify-content-between">
-                <div>
-                    {{t.name}}
-                </div>
-              
-              <div>
-                <button style="border:none;" type="button" data-bs-toggle="modal" attr.data-bs-target="#trainingForm{{t.id}}">
-                  <fa-icon class="m-2 text-primary" [icon]="faPen"></fa-icon>                 
-                </button>      
-                <app-training-form (refreshView)="initTrainings()" [isEditMode]="true" [training]="t"></app-training-form>          
-                <button style="border:none;"  type="button" data-bs-toggle="modal" attr.data-bs-target="#deletePopUp{{t.id}}">
-                  <fa-icon class="text-danger" [icon]="faTrash"></fa-icon>
-                </button>
-                <app-delete-pop-up [training]="t" (isConfirmed)="onDelete($event)"></app-delete-pop-up>
+  <div *ngFor="let t of r" class="col-lg-4 col-md-6 col-sm-1">
+    <div class="card bg-light " style="width: 18rem;">
+      <div class="card-header d-flex justify-content-between">
+        <div>
+          {{t.name}}
 
-              </div>
+        </div>
 
+        <div>
+          <a [routerLink]="['/training-log-form']" [queryParams]="{id: t.id}"><button style="border:none;" type="button">
+              <fa-icon class="m-2 text-primary" [icon]="faPen"></fa-icon>
+            </button>
+          </a>
+
+          <app-training-form (refreshView)="initTrainings()" [isEditMode]="true" [training]="t"></app-training-form>
+          <button style="border:none;" type="button" data-bs-toggle="modal" attr.data-bs-target="#deletePopUp{{t.id}}">
+            <fa-icon class="text-danger" [icon]="faTrash"></fa-icon>
+          </button>
+          <app-delete-pop-up [training]="t" (isConfirmed)="onDelete($event)"></app-delete-pop-up>
+
+        </div>
+
+      </div>
+      <ul *ngFor="let index of [0,1,2,3,4]" class="list-group list-group-flush">
+        <li *ngIf="t.trainingSetExercise[index] != null" class="list-group-item">
+          <div class="d-flex justify-content-between">
+            <div>
+              {{t.trainingSetExercise[index].exercise.name}}
             </div>
-            <ul *ngFor="let index of [0,1,2,3,4]" class="list-group list-group-flush">
-              <li *ngIf="t.trainingSet[index] != null"  class="list-group-item">
-                <div class="d-flex justify-content-between">
-                  <div>
-                    {{t.trainingSet[index].exercise.name}}
-                  </div>
-                  <div>
-                    {{t.trainingSet[index].reps}}x{{t.trainingSet[index].sets}}
-                  </div> 
-                </div>
-
-            </li>
-            </ul>
-            <div *ngIf="t.trainingSet.length > 3" class="card-footer bg-transparent border-success align-self-end">
-                    <button class="btn btn-sm btn-link ml-auto" >+ expand</button>
-</div>
-
+            <div>
+              {{calculateRangeOfRepetitions(t.trainingSetExercise[index].trainingSets)}} x {{t.trainingSetExercise[index].trainingSets.length}}
+            </div>
           </div>
+
+        </li>
+      </ul>
+      <div *ngIf="t.trainingSetExercise.length > 3" class="card-footer bg-transparent border-success align-self-end">
+        <button class="btn btn-sm btn-link ml-auto">+ expand</button>
+      </div>
+      <button  [routerLink]="['/training-active']" [queryParams]="{id: t.id}" class="btn btn-info" (click)="startTraining(t.id)">START</button>
     </div>
+    
+  </div>
 
 </div>
 

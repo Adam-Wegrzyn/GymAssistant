@@ -17,15 +17,15 @@ namespace Core.Service
             _trainingRepository = trainingRepository;
             _mapper = mapper;
         }
-        public async Task AddExercise(ExerciseDto exerciseDto, CancellationToken cancellationToken)
+        public async Task AddExercise(ExerciseDTO ExerciseDTO, CancellationToken cancellationToken)
         {
-            var exercise = _mapper.Map<ExerciseDto, Exercise>(exerciseDto);
+            var exercise = _mapper.Map<ExerciseDTO, Exercise>(ExerciseDTO);
             await _trainingRepository.AddExercise(exercise, cancellationToken);
         }
 
-        public async Task AddTraining(TrainingDto trainingDto, CancellationToken cancellationToken)
+        public async Task AddTraining(TrainingDTO TrainingDTO, CancellationToken cancellationToken)
         {
-            var training = _mapper.Map<TrainingDto, Training>(trainingDto);
+            var training = _mapper.Map<TrainingDTO, Training>(TrainingDTO);
 
             await _trainingRepository.AddTraining(training, cancellationToken);
         }
@@ -40,32 +40,32 @@ namespace Core.Service
             await _trainingRepository.DeleteTraining(id, cancellationToken);
         }
 
-        public async Task<List<ExerciseDto>> GetAllExercises(CancellationToken cancellationToken)
+        public async Task<List<ExerciseDTO>> GetAllExercises(CancellationToken cancellationToken)
         {
 
             var exercises = await _trainingRepository.GetAllExercises(cancellationToken);
-            var exercisesDto = _mapper.Map<List<Exercise>, List<ExerciseDto>>(exercises);
+            var exercisesDto = _mapper.Map<List<Exercise>, List<ExerciseDTO>>(exercises);
             return exercisesDto;
         }
 
-        public async Task<List<TrainingDto>> GetAllTrainings(CancellationToken cancellationToken)
+        public async Task<List<TrainingDTO>> GetAllTrainings(CancellationToken cancellationToken)
         {
 
             var trainings = await _trainingRepository.GetAllTrainings(cancellationToken);
-            var trainingsDto = _mapper.Map<List<Training>, List<TrainingDto>>(trainings);
+            var trainingsDto = _mapper.Map<List<Training>, List<TrainingDTO>>(trainings);
            return trainingsDto;
         }
 
-        public async Task<ExerciseDto> GetExercise(int id, CancellationToken cancellationToken)
+        public async Task<ExerciseDTO> GetExercise(int id, CancellationToken cancellationToken)
         {
             var exercise = await _trainingRepository.GetExercise(id, cancellationToken);
-            return _mapper.Map<Exercise, ExerciseDto>(exercise);
+            return _mapper.Map<Exercise, ExerciseDTO>(exercise);
 
         }
 
-        public async Task UpdateTraining(TrainingDto trainingDto, CancellationToken cancellationToken)
+        public async Task UpdateTraining(TrainingDTO TrainingDTO, CancellationToken cancellationToken)
         {          
-            var trainingToUpdate = _mapper.Map<TrainingDto, Training>(trainingDto);
+            var trainingToUpdate = _mapper.Map<TrainingDTO, Training>(TrainingDTO);
 
             await _trainingRepository.UpdateTraining(trainingToUpdate, cancellationToken);
         }

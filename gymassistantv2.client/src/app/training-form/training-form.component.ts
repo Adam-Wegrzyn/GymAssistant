@@ -68,8 +68,6 @@ export class TrainingFormComponent implements OnInit {
     for (let i = 1; i < 100; i++) {
       this.sets.push(i);
     }
-    
-    
   }
 
   onSubmit(){

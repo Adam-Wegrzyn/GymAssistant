@@ -9,7 +9,7 @@ namespace Data.Common.DTO
     public class TrainingSessionDto: BaseDto
     {
         public string Name { get; set; }
-        public TrainingDto TrainingPlan { get; set; }
-        public ICollection<TrainingSetDto> TrainingSets { get; set; }
+        public TrainingDTO TrainingPlan { get; set; }
+        public ICollection<TrainingSetDTO> TrainingSets { get; set; }
     }
 }

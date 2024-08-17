@@ -1,8 +1,8 @@
 ﻿namespace Data.Common.DTO
 {
-    public class TrainingSetExerciseDto: BaseDto
+    public class TrainingSetExerciseDTO: BaseDto
     {
-        public ExerciseDto Exercise { get; set; }
-        public List<TrainingSetDto> TrainingSets { get; set; }
+        public ExerciseDTO Exercise { get; set; }
+        public List<TrainingSetDTO> TrainingSets { get; set; }
     }
 }

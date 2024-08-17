@@ -34,6 +34,9 @@ export class TrainingService{
         console.log(Training);
         return this.http.post<Training>(this.apiUrl + ('Training/addTraining'),Training)
     }
+    AddTrainigLog(TrainingLog: any) {
+        return this.http.post<Training>(this.apiUrl + 'Training/AddTrainingLog', TrainingLog);
+      }
     public AddExercise(exercise: Exercise): Observable<Exercise>{
         return this.http.post<Exercise>(this.apiUrl + 'Training/addExercise', exercise)
     }

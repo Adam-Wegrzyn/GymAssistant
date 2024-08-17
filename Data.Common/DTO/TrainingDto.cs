@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Data.Common.DTO
 {
-    public class TrainingDto: BaseDto
+    public class TrainingDTO: BaseDto
     {
         public string Name { get; set; }
-        public List<TrainingSetExerciseDto> TrainingSetExercise { get; set; }
+        public List<TrainingSetExerciseDTO> TrainingSetExercise { get; set; }
     }
 }

@@ -13,6 +13,8 @@ import { TrainingFormComponent } from './training-form/training-form.component';
 import { DeletePopUpComponent } from './shared/delete-pop-up/delete-pop-up.component';
 import { GroupByPipe } from './training-log/group-by.pipe';
 import { TrainingLogFormComponent } from './training-log/training-log-form.component';
+import { SetTrainingNameModalComponent } from './set-training-name-modal/set-training-name-modal.component';
+import { TrainingActiveComponent } from './training-active/training-active.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { TrainingLogFormComponent } from './training-log/training-log-form.compo
     AllExercisesComponent,
     AddExerciseComponent,
     MyTrainingsComponent,
-    TrainingLogFormComponent
+    TrainingLogFormComponent,
+    SetTrainingNameModalComponent,
+    TrainingActiveComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +36,7 @@ import { TrainingLogFormComponent } from './training-log/training-log-form.compo
     TrainingFormComponent,
     DeletePopUpComponent,
     GroupByPipe,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

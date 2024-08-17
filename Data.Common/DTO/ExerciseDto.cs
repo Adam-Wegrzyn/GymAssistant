@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Data.Common.DTO
 {
-    public class ExerciseDto: BaseDto
+    public class ExerciseDTO: BaseDto
     {
         public string Name { get; set; }
     }

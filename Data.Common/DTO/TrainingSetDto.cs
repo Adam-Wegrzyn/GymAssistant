@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Data.Common.DTO
 {
-    public class TrainingSetDto: BaseDto
+    public class TrainingSetDTO: BaseDto
     {
         public int Reps { get; set; }
         public decimal Weight { get; set; }

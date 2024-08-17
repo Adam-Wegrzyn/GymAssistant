@@ -1,0 +1,13 @@
+
+
+  <div class="modal-header">
+    <h4 class="modal-title">Set Training Name</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <input type="text" #trainingName class="form-control" placeholder="Enter training name">
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss('cancel click')">Cancel</button>
+    <button type="button" class="btn btn-primary" (click)="setName(trainingName.value)">Save</button>
+  </div>

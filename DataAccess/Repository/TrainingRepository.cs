@@ -32,6 +32,11 @@ namespace DataAccess.Repository
         public async Task AddTraining(Training training, CancellationToken cancellationToken)
         {
             _dbContext.Trainings.Add(training);
+            foreach (var t in training.TrainingSetExercise)
+            {
+                _dbContext.Exercises.Attach(t.Exercise);
+
+            }
             //var exercisesToAttach = training.TrainingSet.Select(t => t.Exercise);
             //foreach (var t in exercisesToAttach)
             //{
@@ -68,11 +73,17 @@ namespace DataAccess.Repository
 
         public async Task DeleteTraining(int id, CancellationToken cancellationToken)
         {
-            var training = _dbContext.Trainings.FirstOrDefault(t => t.Id == id);
+            var training = _dbContext.Trainings
+                .Include(t => t.TrainingSetExercise)
+                    .ThenInclude(ts => ts.Exercise)
+                    .Include(t => t.TrainingSetExercise)
+                    .ThenInclude(t => t.TrainingSets).FirstOrDefault(t => t.Id == id)
+   ;
 
             if (training != null)
             {
-                _dbContext.Trainings.Remove(training);
+                _dbContext.Trainings
+                    .Remove(training);
                 await _dbContext.SaveChangesAsync();
             }
             
@@ -100,6 +111,7 @@ namespace DataAccess.Repository
             var trainingToUpdate = await GetTraining(training.Id, cancellationToken); 
             if (trainingToUpdate != null)
             {
+                //handle what nested entities have been deleted
                 var t1 = trainingToUpdate.TrainingSetExercise.Select(t => t.TrainingSets.Select(tr => tr.Id));
                 var t2 = training.TrainingSetExercise.Select(t => t.TrainingSets.Select(tr => tr.Id));
                 var deleteExercises = trainingToUpdate.TrainingSetExercise.Select(t => t.Id).Except(training.TrainingSetExercise.Select(t => t.Id));
@@ -109,7 +121,8 @@ namespace DataAccess.Repository
                 toDeleteSets.ForEach(t => _dbContext.Entry(t).State = EntityState.Deleted);
                 toDeleteExercise.ForEach(t => _dbContext.Entry(t).State = EntityState.Deleted);
 
-                trainingToUpdate.TrainingSetExercise = training.TrainingSetExercise;
+
+                 trainingToUpdate.TrainingSetExercise = training.TrainingSetExercise;
                 _dbContext.Update(trainingToUpdate);
                 
            }

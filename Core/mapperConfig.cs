@@ -13,11 +13,15 @@ namespace Core
     {
         public mapperConfig()
         {
-            CreateMap<ExerciseDto, Exercise>().ReverseMap();
-            CreateMap<TrainingDto, Training>().ReverseMap();
-            CreateMap<TrainingLogDto, TrainingLog>().ReverseMap();
-            CreateMap<TrainingSetDto, TrainingSet>().ReverseMap();
-            CreateMap<TrainingSetExerciseDto, TrainingSetExercise>().ReverseMap();
+            CreateMap<ExerciseDTO, Exercise>().ReverseMap();
+            CreateMap<TrainingDTO, Training>().ReverseMap();
+            CreateMap<TrainingLogDTO, TrainingLog>().ReverseMap();
+            CreateMap<TrainingSetDTO, TrainingSet>().ReverseMap();
+            CreateMap<TrainingSetExerciseDTO, TrainingSetExercise>().ReverseMap();
+            CreateMap<TrainingSetLogDTO, TrainingSetLog>().ReverseMap(); 
+            CreateMap<TrainingSetExerciseLogDTO, TrainingSetExerciseLog>().ReverseMap(); 
+
+
         }
 
 

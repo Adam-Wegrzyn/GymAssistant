@@ -44,9 +44,18 @@ namespace GymAssistantv2.Server.Controllers
 
         [HttpPost]
         [Route("addTraining")]
-        public async Task<IActionResult> AddTraining([FromBody] TrainingDto trainingDto, CancellationToken cancellationToken)
+        public async Task<IActionResult> AddTraining([FromBody] TrainingDTO TrainingDTO, CancellationToken cancellationToken)
         {
-            await _trainingService.AddTraining(trainingDto, cancellationToken);
+
+            await _trainingService.AddTraining(TrainingDTO, cancellationToken);
+            return Ok();
+        }        
+        [HttpPost]
+        [Route("addTrainingLog")]
+        public async Task<IActionResult> AddTrainingLog([FromBody] TrainingLogDTO TrainingDTO, CancellationToken cancellationToken)
+        {
+
+            await _trainingService.AddTrainingLog(TrainingLogDTO, cancellationToken);
             return Ok();
         }
 
@@ -61,9 +70,9 @@ namespace GymAssistantv2.Server.Controllers
 
         [HttpPost]
         [Route("addExercise")]
-        public async Task<IActionResult> AddExercise([FromBody] ExerciseDto exerciseDto, CancellationToken cancellationToken)
+        public async Task<IActionResult> AddExercise([FromBody] ExerciseDTO ExerciseDTO, CancellationToken cancellationToken)
         {
-            await _trainingService.AddExercise(exerciseDto, cancellationToken);
+            await _trainingService.AddExercise(ExerciseDTO, cancellationToken);
             Console.WriteLine("executed add");
             return Ok();
             
@@ -81,9 +90,9 @@ namespace GymAssistantv2.Server.Controllers
 
         [HttpPost]
         [Route("updateTraining")]
-        public async Task<IActionResult> UpdateTraining([FromBody] TrainingDto trainingDto, CancellationToken cancellationToken)
+        public async Task<IActionResult> UpdateTraining([FromBody] TrainingDTO TrainingDTO, CancellationToken cancellationToken)
         {
-            await _trainingService.UpdateTraining(trainingDto, cancellationToken);
+            await _trainingService.UpdateTraining(TrainingDTO, cancellationToken);
             return Ok();
         }
     }

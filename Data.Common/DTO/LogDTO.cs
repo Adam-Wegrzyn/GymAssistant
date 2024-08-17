@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Data.Common.DTO
 {
-    public class TrainingLogDTO: LogDTO
+    public class LogDTO: BaseDto
     {
-        TrainingDTO Training { get; set; }
-        public DateTime Date { get; set; }
+        bool IsCompleted { get; set; }
+        TimeOnly Duration { get; set; }
     }
 }
