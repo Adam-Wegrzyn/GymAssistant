@@ -50,15 +50,7 @@ namespace GymAssistantv2.Server.Controllers
             await _trainingService.AddTraining(TrainingDTO, cancellationToken);
             return Ok();
         }        
-        [HttpPost]
-        [Route("addTrainingLog")]
-        public async Task<IActionResult> AddTrainingLog([FromBody] TrainingLogDTO TrainingDTO, CancellationToken cancellationToken)
-        {
-
-            await _trainingService.AddTrainingLog(TrainingLogDTO, cancellationToken);
-            return Ok();
-        }
-
+        
         [HttpDelete]
         [Route("deleteTraining/{id}")]
         public async Task<IActionResult> DeleteTraining(int id, CancellationToken cancellationToken)

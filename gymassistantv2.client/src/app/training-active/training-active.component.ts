@@ -15,5 +15,5 @@ export class TrainingActiveComponent implements OnInit {
     this.route.queryParams.subscribe(params =>{this.trainingId = params ["id"]; })
     console.log(this.trainingId);
   }
-  
+
 }

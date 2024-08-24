@@ -4,6 +4,7 @@ using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(GymAssistantDbContext))]
-    partial class GymAssistantDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240818073434_MissingFieldsFix")]
+    partial class MissingFieldsFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,9 +54,6 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("isLogged")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.ToTable("Trainings");
@@ -70,8 +70,11 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Duration")
-                        .HasColumnType("int");
+                    b.Property<TimeOnly>("Duration")
+                        .HasColumnType("time");
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("TrainingId")
                         .HasColumnType("int");
@@ -131,6 +134,49 @@ namespace DataAccess.Migrations
                     b.ToTable("TrainingSetsExercises");
                 });
 
+            modelBuilder.Entity("DataAccess.Entities.TrainingSetExerciseLog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<TimeOnly>("Duration")
+                        .HasColumnType("time");
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("TrainingSetExerciseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TrainingSetExerciseId");
+
+                    b.ToTable("TrainingSetExerciseLogs");
+                });
+
+            modelBuilder.Entity("DataAccess.Entities.TrainingSetLog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<TimeOnly>("Duration")
+                        .HasColumnType("time");
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TrainingSetLogs");
+                });
+
             modelBuilder.Entity("DataAccess.Entities.TrainingLog", b =>
                 {
                     b.HasOne("DataAccess.Entities.Training", "Training")
@@ -162,6 +208,17 @@ namespace DataAccess.Migrations
                         .HasForeignKey("TrainingId");
 
                     b.Navigation("Exercise");
+                });
+
+            modelBuilder.Entity("DataAccess.Entities.TrainingSetExerciseLog", b =>
+                {
+                    b.HasOne("DataAccess.Entities.TrainingSetExercise", "TrainingSetExercise")
+                        .WithMany()
+                        .HasForeignKey("TrainingSetExerciseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TrainingSetExercise");
                 });
 
             modelBuilder.Entity("DataAccess.Entities.Training", b =>

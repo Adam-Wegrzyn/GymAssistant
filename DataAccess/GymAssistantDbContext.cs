@@ -21,14 +21,15 @@ namespace DataAccess
         public DbSet<TrainingSet> TrainingSets { get; set; }
         public DbSet<Training> Trainings { get; set; }
         public DbSet<TrainingSetExercise> TrainingSetsExercises { get; set; }
-        public DbSet<TrainingSetLog> TrainingSetLogs { get; set; }
-        public DbSet<TrainingSetExerciseLog> TrainingSetExerciseLogs { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<TrainingSet>()
                 .Property(t => t.Weight).HasColumnType<decimal>("decimal").HasPrecision(5, 2);
+            modelBuilder.Entity<TrainingLog>()
+                .Property(t => t.Date).HasColumnType<DateTime>("smalldatetime");
               
             
 

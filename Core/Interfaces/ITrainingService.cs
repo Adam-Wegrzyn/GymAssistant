@@ -13,5 +13,6 @@ namespace GymAssistantv2.Server.Controllers
         Task<List<ExerciseDTO>> GetAllExercises(CancellationToken cancellationToken);
         Task<List<TrainingDTO>> GetAllTrainings(CancellationToken cancellationToken);
         Task UpdateTraining(TrainingDTO TrainingDTO, CancellationToken cancellationToken);
+       // Task AddTrainingLog(TrainingLogDTO trainingLogDTO, CancellationToken cancellationToken);
     }
 }

@@ -32,7 +32,7 @@
                         </div>
                         <div class="col-1">                            
                             <div class="ml-2">
-                            <input id="chkDone{{j}}-{{i}}" (change)="setComplete(j, i)" class="form-check-input chkDone{{j}}" type="checkbox">
+                            <input formControlName="isCompleted" id="chkDone{{j}}-{{i}}" (change)="setComplete(j, i)" class="form-check-input chkDone{{j}}" type="checkbox">
                         </div></div>
                         <div class="col">
                             <div class="input-group">                            

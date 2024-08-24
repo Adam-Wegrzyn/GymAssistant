@@ -12,6 +12,7 @@ import { Exercise } from '../domain/Exercise';
 import { SetTrainingNameModalComponent } from '../set-training-name-modal/set-training-name-modal.component';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { interval, map } from 'rxjs';
+import { TrainingLog } from '../domain/TrainingLog';
 @Component({
   selector: 'app-training-log-form',
   templateUrl: './training-log-form.component.html',
@@ -39,6 +40,8 @@ export class TrainingLogFormComponent implements OnInit {
   countSets: number = 0;
   showCountSets: string;
   showTimer: string;
+  currentTime: Date;
+  durationOfTraining: number;
 
 
   constructor(private modalService: NgbModal,
@@ -57,7 +60,9 @@ export class TrainingLogFormComponent implements OnInit {
       id: this.selectedTraining?.id,
       name: [this.selectedTraining?.name],
       trainingSetExercise: this.fb.array([
-      ])
+      ]),
+      isCompleted: false,
+      duration: '0'
     })
 
     this.trainingService.GetAllTrainings()
@@ -84,26 +89,24 @@ export class TrainingLogFormComponent implements OnInit {
   }
   startTimer() {
     interval(1000)
-    .pipe( 
-      map(seconds => {
-        const hours = Math.floor(seconds / 3600);
-        const minutes = Math.floor((seconds % 3600) / 60);
-        const secs = seconds % 60;
-        return `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(secs)}`;
-      })
-    ) 
-    .subscribe(date => {
-      console.log(date)
-      this.showTimer = date.toString()}
+    .subscribe(seconds => {
+      this.showTimer = this.convertTimer(seconds);
+      this.durationOfTraining = seconds;
+        
+    }
     )
+  }
+
+  convertTimer(seconds): string{
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    return `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(secs)}`;
+
   }
 
   pad(num: number): string {
     return num.toString().padStart(2, '0');
-  }
-
-  showTimerTest(seconds: number){
-
   }
 
   initDropDown() {
@@ -144,6 +147,7 @@ export class TrainingLogFormComponent implements OnInit {
         id: new FormControl(t.id),
         reps: new FormControl<number>(t.reps),
         weight: new FormControl<number>(t.weight),
+        isCompleted: new FormControl<boolean>(t.isCompleted)
       }))
     })
     return arr
@@ -152,8 +156,8 @@ export class TrainingLogFormComponent implements OnInit {
   addSet(id: number) {
     this.getTrainingSetArr(id).push(this.fb.group({
       reps: 0,
-      weight: 0
-
+      weight: 0,
+      isCompleted: false
     }))
   }
 
@@ -187,9 +191,27 @@ export class TrainingLogFormComponent implements OnInit {
       this.trainingService.AddTraining(this.form.value).subscribe();
     }
     else if(this.isActive){
-      this.form.value['id'] = this.selectedTraining?.id;
+      //consider only completed sets, set id to 0 (to add new records)
+      this.trainingSetExerciseArr.controls.forEach(control => {
+        const id = control.get('id');
+        if (id != null) id.setValue(0);
+
+        const trainingSets: FormArray<any> = control.get('trainingSets') as FormArray<any>;
+        if(trainingSets != null){
+          for(let i = 0; i < trainingSets.length; i++){
+            trainingSets.at(i).value.id = 0;
+            if(!trainingSets.at(i).value.isCompleted){
+              trainingSets.removeAt(i);
+              i--;
+            }
+          }
+        }
+      });
+      const training = new Training(0, this.form.value['name'], this.form.value['trainingSetExercise'], true);
+      const trainingLog = new TrainingLog(0, new Date(), training, this.durationOfTraining)
+      this.form.value['id'] = 0
       this.form.value['name'] = this.selectedTraining?.name;
-      this.trainingService.AddActiveTraining(this.form.value).subscribe();
+      this.trainingService.AddTrainigLog(trainingLog).subscribe();
     }
     else {
       this.form.value['id'] = this.selectedTraining?.id;

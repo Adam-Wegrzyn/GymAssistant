@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Training } from "../domain/Training";
 import { Observable, catchError } from "rxjs";
 import { Exercise } from "../domain/Exercise";
+import { TrainingLog } from "../domain/TrainingLog";
 
 @Injectable({
     providedIn: 'root'
@@ -21,7 +22,7 @@ export class TrainingService{
     public GetTraining(id: number) {
         throw new Error('Method not implemented.');
     }
-    GetExercise(id: number) {
+    public GetExercise(id: number) {
         return this.http.get<Training[]> (this.apiUrl + 'Training/getExercise/' + id)
       }
     public GetAllTrainings(): Observable<Training[]>{
@@ -34,8 +35,8 @@ export class TrainingService{
         console.log(Training);
         return this.http.post<Training>(this.apiUrl + ('Training/addTraining'),Training)
     }
-    AddTrainigLog(TrainingLog: any) {
-        return this.http.post<Training>(this.apiUrl + 'Training/AddTrainingLog', TrainingLog);
+    public AddTrainigLog(TrainingLog: TrainingLog) {
+        return this.http.post<TrainingLog>(this.apiUrl + 'TrainingLog/CreateTrainingLog', TrainingLog);
       }
     public AddExercise(exercise: Exercise): Observable<Exercise>{
         return this.http.post<Exercise>(this.apiUrl + 'Training/addExercise', exercise)
