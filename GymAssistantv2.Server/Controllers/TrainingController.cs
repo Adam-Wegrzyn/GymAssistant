@@ -6,7 +6,7 @@ using System.Threading;
 namespace GymAssistantv2.Server.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
 
     public class TrainingController: ControllerBase
     {

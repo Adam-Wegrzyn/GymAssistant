@@ -1,12 +1,43 @@
-﻿<header>
-    <ul id="navbar">
-        <li><a href="#">Home</a></li>
-        <li><a routerLink="my-trainings">My Trainings</a></li>
-        <li><a [routerLink]="['/training-log-form']" [queryParams]="{id: 1}">Training Log</a></li>
-        <li><a routerLink="all-exercises">All exercises</a></li>
-        <li><a routerLink="add-exercise">Add exercise</a></li>
-    </ul>
-</header>
+﻿<nav class="navbar d-lg navbar-light bg-light justify-content-between">
+    <a class="navbar-brand" href="#">GymAssistant</a> 
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" routerLink="my-trainings">Trainings</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="training-log">Log</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="all-exercises">Exercise</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="all-exercises">Settings</a>
+        </li>
+      </ul>
+  </nav>
+  <nav class="navbar d-mobile navbar-light bg-light justify-content-between">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+            <fa-icon [icon]="faDumbbell"></fa-icon>
+          <a class="nav-link" routerLink="my-trainings">Trainings</a>
+        </li>
+        <li class="nav-item">
+            <fa-icon [icon]="faBook"></fa-icon>
+          <a class="nav-link" routerLink="training-log">Log</a>
+        </li>
+        </ul >
+        <!-- <a class="navbar-brand" href="#">GA</a>  -->
+        <ul class="navbar-nav">
+        <li class="nav-item">
+            <fa-icon [icon]="faShapes"></fa-icon>
+          <a class="nav-link" routerLink="all-exercises">Exercise</a>
+        </li>
+        <li class="nav-item">
+            <fa-icon [icon]="faGear"></fa-icon>
+          <a class="nav-link" routerLink="all-exercises">Settings</a>
+        </li>
+      </ul>
+  </nav>
 <div class="container">
     <router-outlet></router-outlet>
 </div>

@@ -2,15 +2,38 @@
     width: 80%;
     margin: auto;
 }
-#navbar{
-    display: flex;
+.navbar-brand{
+    padding-left: 20px;
+}
+.navbar-nav{
     flex-direction: row;
-    list-style: none;
-    gap: 20px;
-    justify-content: flex-end;
-    margin-right: 20px;
+    padding-right: 20px;
+}
+.navbar-nav > li{
+    padding-left: 20px;
 }
 
-#navbar > li > a{
-    text-decoration: none;
+@media (max-width: 576px) {
+    .navbar.d-lg{
+         display: none!important;
+    }
+    .navbar.d-mobile {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        z-index: 999;
+        height: 10%
+      }
+    .navbar-nav > li{
+        text-align: center;
+    }
+    .navbar-nav > li > fa-icon{
+        color:rgb(6, 51, 109)
+    }
+    
+}
+@media (min-width: 577px) {
+    .navbar.d-mobile {
+      display: none !important;
+    }
 }

@@ -11,8 +11,8 @@
 
 </div>
 <div *ngFor="let r of trainingsRows" class="row gy-2 mt-2">
-  <div *ngFor="let t of r" class="col-lg-4 col-md-6 col-sm-1">
-    <div class="card bg-light " style="width: 18rem;">
+  <div *ngFor="let t of r" class="col-lg-4 col-md-6 col-sm-12">
+    <div class="card bg-light">
       <div class="card-header d-flex justify-content-between">
         <div>
           {{t.name}}
@@ -41,7 +41,8 @@
               {{t.trainingSetExercise[index].exercise.name}}
             </div>
             <div>
-              {{calculateRangeOfRepetitions(t.trainingSetExercise[index].trainingSets)}} x {{t.trainingSetExercise[index].trainingSets.length}}
+              {{calculateRangeOfRepetitions(t.trainingSetExercise[index].trainingSets)}}
+               x {{t.trainingSetExercise[index].trainingSets.length}}
             </div>
           </div>
 
@@ -50,7 +51,8 @@
       <div *ngIf="t.trainingSetExercise.length > 3" class="card-footer bg-transparent border-success align-self-end">
         <button class="btn btn-sm btn-link ml-auto">+ expand</button>
       </div>
-      <button  [routerLink]="['/training-active']" [queryParams]="{id: t.id}" class="btn btn-info" (click)="startTraining(t.id)">START</button>
+      <button  [routerLink]="['/training-active']"
+       [queryParams]="{id: t.id}" class="btn btn-info" (click)="startTraining(t.id)">START</button>
     </div>
     
   </div>

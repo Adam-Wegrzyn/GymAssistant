@@ -9,6 +9,7 @@ import { NgForm } from '@angular/forms';
 import { ViewChild } from '@angular/core'
 import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { TrainingFormComponent } from '../training-form/training-form.component';
+import { map } from 'rxjs';
 
 
 
@@ -39,7 +40,11 @@ export class MyTrainingsComponent implements OnInit {
   }
 
   public initTrainings() {
-    this.trainingService.GetAllTrainings().subscribe(
+    this.trainingService.GetAllTrainings().
+    pipe(
+      map(res => res.filter(x => x.isLogged == false))
+    )
+    .subscribe(
       (res) => this.trainings = res,
       (err) => console.log(err),
       () => {

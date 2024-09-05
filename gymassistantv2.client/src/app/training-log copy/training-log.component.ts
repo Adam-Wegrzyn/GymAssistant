@@ -2,8 +2,14 @@ import { Component, OnInit, Pipe } from '@angular/core';
 import { TrainingService } from '../services/training-service';
 import { Training } from '../domain/Training';
 import { TrainingSet } from '../domain/TrainingSet';
-import { groupBy } from 'lodash-es';
-import { GroupByPipe } from './group-by.pipe';
+import { CalendarEvent } from 'angular-calendar';
+import { startOfDay } from 'date-fns';
+import { CalendarUtils } from 'angular-calendar'; 
+import { TrainingLog } from '../domain/TrainingLog';
+import { MatCalendar, MatCalendarCell, MatCalendarCellCssClasses } from '@angular/material/datepicker'
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-training-log',
@@ -11,88 +17,55 @@ import { GroupByPipe } from './group-by.pipe';
   styleUrls: ['./training-log.component.css']
 })
 export class TrainingLogComponent implements OnInit {
+  events: CalendarEvent[] = [];
+  trainingLogs: TrainingLog[] = []
+  faPen = faPen;
+  faTrash = faTrash;
+  viewDate: Date = new Date();
+  activeDayIsOpen: boolean = false;
+  selectedTrainingLog: TrainingLog;
+  selectedTrainingDayLogs: TrainingLog[];
+  selectedTraining: Training;
+  selectedDay: Date;
+  events2: Date[] = [
+    new Date(2024, 9, 16), // October 16, 2023
+    new Date(2023, 9, 18)  // October 18, 2023
+  ];
+
+
 
   constructor(private trainingService: TrainingService) {
   }
   ngOnInit(): void {
-
-    //testing purposes
-    this.initTrainings();
-   // this.initDropDowns();
     
-    this.isSelectedTrainingShown = true;
-  }
-  // private initDropDowns() {
-  //   this.trainingSet.reps = 1;
-  //   for (let i = 1; i <= 100; i++) {
-  //     this.reps.push(i);
-  //   }
-
-  //   this.trainingSet.sets = 1;
-  //   for (let i = 1; i < 100; i++) {
-  //     this.sets.push(i);
-  //   }
-  // }
-
-  selectedTraining: Training | undefined;
-  trainings: Training[];
-  trainingsRows: any = [[]];
-  isTrainingSelectVisible: boolean = false;
-  isSelectedTrainingShown: boolean = false;
-  exercises: any[];
-  groupByPipe: GroupByPipe;
-
-
-  showTrainingSelect(){
     this.initTrainings();
-    this.isTrainingSelectVisible = true;
   }
-  public initTrainings() {
-    this.trainingService.GetAllTrainings().subscribe(
-      (res) => this.trainings = res,
-      (err) => console.log(err),
-      () => {
-        this.createTrainingRows()
-        //testing purposes
-        this.selectedTraining = this.trainings.find(t => t.id == 66);
-        console.log(this.selectedTraining)
-      }
+
+  private initTrainings() {
+    this.trainingService.GetAllTrainingLogs().subscribe(
+      (res) => {
+        this.trainingLogs = res;
+        this.selectedTrainingLog = this.trainingLogs.sort((a, b) => a.date > b.date ? -1 : 1)[0];   
+        this.selectedTraining = this.selectedTrainingLog.training;    
+        this.selectedTrainingDayLogs = this.trainingLogs.sort((a, b) => a.date > b.date ? -1 : 1).filter(x => new Date(x.date).toLocaleDateString() == new Date().toLocaleDateString());
+        console.log(this.selectedTrainingDayLogs);
+      },
+      (err) => console.log(err)
     );
   }
+ 
 
-  private createTrainingRows() {
-    this.trainingsRows = [[]];
-    let j = 0;
-    for (let i = 0; i < this.trainings.length; i++) {
-      if (i != 0 && i % 3 == 0) {
-        this.trainingsRows.push([]);
-        j++;
-      }
-      this.trainingsRows[j].push(this.trainings[i]);
-    }
-  }
-  selectTraining(id: number){
-    this.isTrainingSelectVisible = false;
-    this.showTrainingLog(id);
-  }
+  dateClass = (date: Date): MatCalendarCellCssClasses => {
+    return this.trainingLogs.some(log => new Date(log.date).toLocaleDateString() === date.toLocaleDateString()) ? 'special-date' : '';}
 
-  showTrainingLog(id: number) {
-    if(this.trainings.find(t => t.id == id) !== undefined){
-      this.selectedTraining = this.trainings.find(t => t.id == id);
-      
-    }
-    else{
-      throw console.error("This training doesn't exist!");
-      
-    }
-    
-    this.isSelectedTrainingShown = true;
-  }
-
-  addSet(id: number){
-   // this.selectedTraining?.trainingSet.push(new TrainingSet())
-
-  }
-
+ onSelect(event: any){
+  this.selectedDay = event;
+  console.log(event);
+  console.log(this.trainingLogs);
+  //  this.selectedTrainingLog = this.trainingLogs.find(x => x.date == event.date);
+  //  this.selectedTraining = this.selectedTrainingLog.training;
+  this.selectedTrainingDayLogs = this.trainingLogs.filter(x => new Date(x.date).toLocaleDateString() == event.toLocaleDateString());
+  console.log(this.selectedTrainingDayLogs);
+ }
 }
 

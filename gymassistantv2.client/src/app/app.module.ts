@@ -15,6 +15,13 @@ import { GroupByPipe } from './training-log/group-by.pipe';
 import { TrainingLogFormComponent } from './training-log/training-log-form.component';
 import { SetTrainingNameModalComponent } from './set-training-name-modal/set-training-name-modal.component';
 import { TrainingActiveComponent } from './training-active/training-active.component';
+import { CalendarModule, CalendarUtils, DateAdapter } from 'angular-calendar';
+import { TrainingLogComponent } from './training-log copy/training-log.component';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { ConvertTimePipe } from './convert-time.pipe';
+
 
 @NgModule({
   declarations: [
@@ -24,7 +31,8 @@ import { TrainingActiveComponent } from './training-active/training-active.compo
     MyTrainingsComponent,
     TrainingLogFormComponent,
     SetTrainingNameModalComponent,
-    TrainingActiveComponent
+    TrainingActiveComponent,
+    TrainingLogComponent,
   ],
   imports: [
     BrowserModule,
@@ -37,8 +45,17 @@ import { TrainingActiveComponent } from './training-active/training-active.compo
     DeletePopUpComponent,
     GroupByPipe,
     ReactiveFormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory}),
+    ConvertTimePipe
   ],
-  providers: [],
+  providers: [
+    CalendarUtils,
+    TrainingActiveComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

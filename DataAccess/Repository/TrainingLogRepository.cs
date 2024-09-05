@@ -26,7 +26,7 @@ public class TrainingLogRepository : ITrainingLogRepository
             _dbContext.Exercises.Attach(t.Exercise);
         }
 
-            await _dbContext.SaveChangesAsync(cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
     public async Task UpdateTrainingLog(TrainingLog trainingLog, CancellationToken cancellationToken)
@@ -37,5 +37,17 @@ public class TrainingLogRepository : ITrainingLogRepository
             _dbContext.Entry(existingLog).CurrentValues.SetValues(trainingLog);
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
+    }
+
+    public async Task<List<TrainingLog>> GetAllTrainingLogs(CancellationToken cancellationToken)
+    {
+        return await _dbContext.TrainingLogs
+            .Include(t => t.Training)
+                .ThenInclude(t => t.TrainingSetExercise)
+                    .ThenInclude(t => t.Exercise)
+            .Include(t => t.Training)
+                .ThenInclude(t => t.TrainingSetExercise)
+                    .ThenInclude(t => t.TrainingSets)
+            .ToListAsync(cancellationToken);
     }
 }

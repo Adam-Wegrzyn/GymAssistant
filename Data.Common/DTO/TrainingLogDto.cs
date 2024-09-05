@@ -7,11 +7,12 @@ using System.Threading.Tasks;
 
 namespace Data.Common.DTO
 {
-    public class TrainingLogDTO
+    public class TrainingLogDTO: BaseDto
     {
         public TrainingDTO Training { get; set; }
 
         [Column(TypeName = "date")]
         public DateTime Date { get; set; }
+        public int Duration { get; set; }
     }
 }

@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
-
-  
-
+import { faDumbbell, faBook, faGear, faShapes } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+
+  faDumbbell = faDumbbell;
+  faBook = faBook;
+  faGear = faGear;
+  faShapes = faShapes;
 
   constructor() {}
 

@@ -8,7 +8,8 @@ export class Training{
     public trainingSetExercise: trainingSetExercise[];
     public isLogged: boolean;
 
-    constructor(id: number = 0, name: string = '', trainingSetExercise: trainingSetExercise[] = [], isLogged: boolean = false){
+    constructor(id: number = 0, name: string = '', trainingSetExercise: trainingSetExercise[] = [],
+         isLogged: boolean = false){
         this.id = id,
         this.name = name;
         this.trainingSetExercise = trainingSetExercise;

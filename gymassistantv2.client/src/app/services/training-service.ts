@@ -9,9 +9,9 @@ import { TrainingLog } from "../domain/TrainingLog";
     providedIn: 'root'
 })
 
-export class TrainingService{
-    private apiUrl = 'https://localhost:7082/'
-    constructor (private http: HttpClient){ }
+export class TrainingService {
+    private apiUrl = 'api/'
+    constructor(private http: HttpClient) { }
 
     public DeleteTraining(id: number) {
         return this.http.delete<Exercise>(this.apiUrl + 'Training/DeleteTraining/' + id)
@@ -23,25 +23,31 @@ export class TrainingService{
         throw new Error('Method not implemented.');
     }
     public GetExercise(id: number) {
-        return this.http.get<Training[]> (this.apiUrl + 'Training/getExercise/' + id)
-      }
-    public GetAllTrainings(): Observable<Training[]>{
-        return this.http.get<Training[]> (this.apiUrl + 'Training/getAllTrainings')
+        return this.http.get<Training[]>(this.apiUrl + 'Training/getExercise/' + id)
     }
-    public GetAllExercises(): Observable<Exercise[]>{
+    public GetAllTrainings(): Observable<Training[]> {
+        return this.http.get<Training[]>(this.apiUrl + 'Training/getAllTrainings')
+    }
+    public GetAllExercises(): Observable<Exercise[]> {
         return this.http.get<Exercise[]>(this.apiUrl + 'Training/getAllExercises')
     }
-    public AddTraining(Training: Training){
+    public AddTraining(Training: Training) {
         console.log(Training);
-        return this.http.post<Training>(this.apiUrl + ('Training/addTraining'),Training)
+        return this.http.post<Training>(this.apiUrl + ('Training/addTraining'), Training)
     }
     public AddTrainigLog(TrainingLog: TrainingLog) {
         return this.http.post<TrainingLog>(this.apiUrl + 'TrainingLog/CreateTrainingLog', TrainingLog);
-      }
-    public AddExercise(exercise: Exercise): Observable<Exercise>{
+    }
+    public AddExercise(exercise: Exercise): Observable<Exercise> {
         return this.http.post<Exercise>(this.apiUrl + 'Training/addExercise', exercise)
     }
     public UpdateTraining(training: Training) {
         return this.http.post<Training>(this.apiUrl + 'Training/UpdateTraining', training);
-      }   
+    }
+    public GetAllTrainingLogs(): Observable<TrainingLog[]> {
+        return this.http.get<TrainingLog[]>(this.apiUrl + 'TrainingLog/GetAllTrainingLogs');
+    }
+    public GetTrainingLog(id: number): Observable<TrainingLog> {
+        return this.http.get<TrainingLog>(this.apiUrl + 'TrainingLog/GetTrainingLog');
+    }
 }

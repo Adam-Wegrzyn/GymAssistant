@@ -36,5 +36,11 @@ namespace Core.Service
             await _trainingLogRepository.UpdateTrainingLog(trainingLog, cancellationToken);
         }
 
+        public async Task<List<TrainingLogDTO>> GetAllTrainingLogs(CancellationToken cancellationToken)
+        {
+            var  trainingLogs = await _trainingLogRepository.GetAllTrainingLogs(cancellationToken);
+            var exercisesDto = _mapper.Map<List<TrainingLog>, List<TrainingLogDTO>>(trainingLogs);
+            return _mapper.Map<List<TrainingLogDTO>>(trainingLogs);
+        }
     }
 }

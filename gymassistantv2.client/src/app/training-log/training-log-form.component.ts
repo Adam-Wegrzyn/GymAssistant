@@ -13,6 +13,8 @@ import { SetTrainingNameModalComponent } from '../set-training-name-modal/set-tr
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { interval, map } from 'rxjs';
 import { TrainingLog } from '../domain/TrainingLog';
+import { TrainingActiveComponent } from '../training-active/training-active.component';
+
 @Component({
   selector: 'app-training-log-form',
   templateUrl: './training-log-form.component.html',
@@ -22,8 +24,9 @@ export class TrainingLogFormComponent implements OnInit {
   @ViewChild('modalExercise') modalExercise: ElementRef;
   @ViewChild('closeBtn') closeBtn: ElementRef;
   @ViewChild('SetTrainingNameModalComponent') setTrainingNameModalComponent: SetTrainingNameModalComponent;
+  //@ViewChild('TrainingActiveComponent') trainingActiveComponent: TrainingActiveComponent;
   
-
+  @Input() durationOfTraining: number;
   @Input() isActive: boolean = false;
   isNew: boolean = false;
   form: FormGroup;
@@ -41,7 +44,6 @@ export class TrainingLogFormComponent implements OnInit {
   showCountSets: string;
   showTimer: string;
   currentTime: Date;
-  durationOfTraining: number;
 
 
   constructor(private modalService: NgbModal,
@@ -49,10 +51,10 @@ export class TrainingLogFormComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private el: ElementRef,
-    private renderer: Renderer2) {
+    private renderer: Renderer2,
+    private trainingActiveComponent: TrainingActiveComponent) {
   }
   ngOnInit(): void {
-    this.startTimer();
     this.route.queryParams.subscribe(params => { this.trainingId = params["id"]; })
     if (this.trainingId == 0) this.isNew = true;
     this.initDropDown();
@@ -64,6 +66,7 @@ export class TrainingLogFormComponent implements OnInit {
       isCompleted: false,
       duration: '0'
     })
+    
 
     this.trainingService.GetAllTrainings()
       .subscribe(
@@ -86,27 +89,6 @@ export class TrainingLogFormComponent implements OnInit {
       .subscribe(
         (res) => this.exercises = res
       )
-  }
-  startTimer() {
-    interval(1000)
-    .subscribe(seconds => {
-      this.showTimer = this.convertTimer(seconds);
-      this.durationOfTraining = seconds;
-        
-    }
-    )
-  }
-
-  convertTimer(seconds): string{
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const secs = seconds % 60;
-    return `${this.pad(hours)}:${this.pad(minutes)}:${this.pad(secs)}`;
-
-  }
-
-  pad(num: number): string {
-    return num.toString().padStart(2, '0');
   }
 
   initDropDown() {
@@ -243,52 +225,8 @@ export class TrainingLogFormComponent implements OnInit {
       console.log(this.form);
     });
   }
-  setComplete(idExercise: number, idSet: number) {
-    const rowId = `setRow${idExercise}-${idSet}`;
-    const chkId = `chkDone${idExercise}-${idSet}`;
-    const row = this.el.nativeElement.querySelector(`#${rowId}`);
-    const chk = this.el.nativeElement.querySelector(`#${chkId}`);
-    const allSets = this.el.nativeElement.querySelectorAll(`.chkDone${idExercise}`);
-    if(row){
-      if(chk.checked){
-        this.renderer.setStyle(row, 'background-color', '#80ff00');
-      }
-      else {
-        this.renderer.setStyle(row, 'background-color', 'white');
-      
-    }
-    const exercise = this.el.nativeElement.querySelector(`#exercise${idExercise}`);
-    if(AreAllSetsChecked(allSets)){
-      this.renderer.setStyle(exercise, 'background-color', '#80ff00');
-    }
-    else{
-      this.renderer.setStyle(exercise, 'background-color', 'white');
-    };
-    let completedCount = CountCompletedSets(allSets);
-    
-    var showCountSets = this.el.nativeElement.querySelector(`#showCountSets${idExercise}`);
-    showCountSets.innerHTML = `Completed sets: ${completedCount}/${allSets.length}`;
-    if(completedCount == allSets.length){
-    }    
-  }}
 
-}
-
-function AreAllSetsChecked(allSets: any): boolean {
-  for(let i=0; i<allSets.length; i++){
-    if(!allSets[i].checked){
-      return false;
-    }
+  test(i: number, j: number) {
+    this.trainingActiveComponent.setComplete(i, j);
   }
-  return true
 }
-
-
-function CountCompletedSets(allSets: any): number {
-  let count = 0;
-  for (let i = 0; i < allSets.length; i++ ){
-    if(allSets[i].checked) count++;
-  }
-  return count;
-}
-

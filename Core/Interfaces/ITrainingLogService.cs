@@ -9,5 +9,6 @@ namespace Core.Service
         Task<TrainingLogDTO> GetTrainingLog(int id, CancellationToken cancellationToken);
         Task CreateTrainingLog(TrainingLogDTO trainingLogDto, CancellationToken cancellationToken);
         Task UpdateTrainingLog(TrainingLogDTO trainingLogDto, CancellationToken cancellationToken);
+        Task<List<TrainingLogDTO>> GetAllTrainingLogs(CancellationToken cancellationToken);
     }
 }
