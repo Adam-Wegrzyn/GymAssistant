@@ -1,6 +1,4 @@
-﻿
-using Data.Common.DTO;
-using DataAccess.Entities;
+﻿using DataAccess.Entities;
 
 namespace Core.Service
 {

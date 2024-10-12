@@ -6,6 +6,7 @@ import { AllExercisesComponent } from './all-exercises/all-exercises.component';
 import { AddExerciseComponent } from './add-exercise/add-exercise.component';
 import { TrainingActiveComponent } from './training-active/training-active.component';
 import { TrainingLogComponent } from './training-log copy/training-log.component';
+import { ExerciseDetailsComponent } from './exercise-details/exercise-details.component';
 
 const routes: Routes = [
     {
@@ -31,6 +32,10 @@ const routes: Routes = [
     {
         path: "training-log",
         component: TrainingLogComponent
+    },
+    {
+        path: "exercise-details",
+        component: ExerciseDetailsComponent
     }
 ];
 

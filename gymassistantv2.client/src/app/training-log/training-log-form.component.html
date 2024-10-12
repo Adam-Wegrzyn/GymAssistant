@@ -5,7 +5,7 @@
             <div class="card bg-light">
                 <div class="card-header d-flex justify-content-between" formgGroup="">
                     <div>
-                        <span>{{form.get('name')?.value}}</span>
+                        <span class="fw-semibold">{{form.get('name')?.value}}</span>
                     </div>
                     <div>
                     </div>
@@ -21,7 +21,7 @@
                                         <span>{{trainingSetExerciseArr.controls[j].get('exercise')?.value['name']}}</span>                           
                                     </div>
                                     <div class="col text-end">
-                                        <button class="btn btn-danger" (click)="deleteExercise(j)">-</button>
+                                        <button class="btn btn-danger btn-xs" (click)="deleteExercise(j)"><fa-icon [icon]="faTimes"></fa-icon></button>
 
                                     </div>
                                 </div>
@@ -71,7 +71,7 @@
                                             </div>
                                         </div>
                                         <div class="col-1">
-                                            <button class="btn btn-danger" (click)="deleteSet(j, i)">-</button>
+                                            <button class="btn btn-xs btn-danger" (click)="deleteSet(j, i)"><fa-icon [icon]="faTimes"></fa-icon></button>
                                         </div>
                                     </div>
 
@@ -80,17 +80,26 @@
 
                             </div>
                         </ng-container>
-                        <div class="col-2 offset-5">
-                            <div class="form-group">
-                                <button (click)="addSet(j)" class="btn btn-sm btn-success form-control">+</button>
+                        <div class="row justify-content-center">
+                            <div class="col-4">
+                                <div class="form-group ">
+                                    <button (click)="addSet(j)" class="btn btn-sm btn-outline-primary form-control">add set</button>
+                                </div>
+    
                             </div>
-
                         </div>
+
                     </div>
                 </div>
             </div>
-            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#selectExercise">add
-                exercise</button>
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <button class="btn btn-outline-success w-100" data-bs-toggle="modal" data-bs-target="#selectExercise">add
+                        exercise</button>
+    
+                </div>
+            </div>
+                
         </div>
 
 
@@ -104,14 +113,14 @@
             An error occured!
         </div>
     </div>
-    <div class="row">
-        <div class="col-2 offset-10">
+    <div class="row justify-content-end">
+        <div class="col-sm-12 col-lg-3">
             <div *ngIf="!isActive; else elseBlock">
                 <button type="submit" class="btn btn-primary" (click)="onSubmit()">save</button>
             </div>
             <ng-template #elseBlock>
                 <div>
-                    <button type="submit" class="btn btn-primary" (click)="onSubmit()">complete training</button>
+                    <button type="submit" class="btn btn-primary w-100" (click)="onSubmit()">complete training</button>
                 </div>
             </ng-template>
             <div></div>
@@ -119,7 +128,7 @@
         </div>
 
     </div>
-    <div class="modal fade" #modalExercise id="selectExercise" tabindex="-1" aria-labelledby="selectExercu=iseLabel"
+    <div  class="modal fade" #modalExercise id="selectExercise" tabindex="-1" aria-labelledby="selectExercu=iseLabel"
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

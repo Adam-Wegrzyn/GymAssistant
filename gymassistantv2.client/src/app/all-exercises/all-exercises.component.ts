@@ -4,6 +4,7 @@ import { TrainingService } from '../services/training-service';
 import { FormsModule } from '@angular/forms';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-all-exercises',
@@ -15,6 +16,8 @@ export class AllExercisesComponent implements OnInit{
   allExercises: Exercise[];
   x: Observable<string>;
   ex: Exercise = new Exercise();
+  faPen = faPen;
+  faTrash = faTrash;
 
   constructor(private trainingService: TrainingService){
     

@@ -20,10 +20,20 @@
 
 </form>
 <h3>All exercises list:</h3>
-<div *ngFor="let e of allExercises">
-    <span style="margin-right: 15px;"><b>{{e.id}}. </b>{{e.name}}</span>
-    <button class="btn btn-secondary btn-sm">Modify</button><button class="btn btn-danger btn-sm" (click)="DeleteExercise(e.id)">Delete</button>
-</div>
+<ul class="list-group" *ngFor="let e of allExercises">
+    <li [routerLink]="['/exercise-details']" [queryParams]="{id: e.id}" class="list-group-item">
+        <img [src]=e.imagePath>
+        <span style="margin-right: 15px;"><b></b>{{e.name}}</span>
+        <!-- <button class="btn btn-secondary btn-sm">Modify</button> -->
+        <button style="border:none;" type="button" data-bs-toggle="modal" attr.data-bs-target="#deletePopUp{{e.id}}">
+            <fa-icon class="text-danger" [icon]="faTrash"></fa-icon>
+          </button>
+          <app-delete-pop-up [entity]="e" (isConfirmed)="DeleteExercise(e.id)"></app-delete-pop-up>
+    </li>
+
+    </ul>
+
+
 
 
 <!-- <pre>Valid? {{f.form.controls['name']?.valid}}</pre>

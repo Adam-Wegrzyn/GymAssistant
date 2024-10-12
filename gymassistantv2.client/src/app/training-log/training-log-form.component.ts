@@ -14,6 +14,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { interval, map } from 'rxjs';
 import { TrainingLog } from '../domain/TrainingLog';
 import { TrainingActiveComponent } from '../training-active/training-active.component';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-training-log-form',
@@ -44,6 +45,7 @@ export class TrainingLogFormComponent implements OnInit {
   showCountSets: string;
   showTimer: string;
   currentTime: Date;
+  faTimes = faTimes;
 
 
   constructor(private modalService: NgbModal,
@@ -150,7 +152,7 @@ export class TrainingLogFormComponent implements OnInit {
   addExercise(id: string) {
 
     let exercise;
-    this.trainingService.GetExercise(Number(id))
+    this.trainingService.GetExerciseById(Number(id))
       .subscribe(
         (res) => exercise = res,
         (err) => console.log(err),

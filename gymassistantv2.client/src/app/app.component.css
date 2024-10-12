@@ -1,6 +1,12 @@
-﻿#main-container{
-    width: 80%;
-    margin: auto;
+﻿html, body {
+     height: 100%;
+    margin: 0;
+    padding: 0;
+    
+}
+.container{
+    padding-bottom: 20%;
+    
 }
 .navbar-brand{
     padding-left: 20px;
@@ -22,18 +28,37 @@
         bottom: 0;
         width: 100%;
         z-index: 999;
-        height: 10%
+        height: 10%;
       }
     .navbar-nav > li{
+        display: flex;
+        flex-direction: column;
         text-align: center;
+        justify-content: center
     }
     .navbar-nav > li > fa-icon{
-        color:rgb(6, 51, 109)
+        color:rgb(6, 51, 109);
+        font-size: 25px;
     }
+    .navbar-nav > li > a{
+        font-size: 14px;
+        margin-top: 0;
+        padding-top: 0;
+    }
+
+
     
 }
 @media (min-width: 577px) {
     .navbar.d-mobile {
       display: none !important;
     }
+}
+.nav-icons{
+font-size:24px
+}
+
+.active-nav-li{
+    color:rgb(0, 56, 119)!important;
+    font-weight:500;
 }

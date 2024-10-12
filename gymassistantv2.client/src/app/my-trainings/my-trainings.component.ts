@@ -48,22 +48,8 @@ export class MyTrainingsComponent implements OnInit {
       (res) => this.trainings = res,
       (err) => console.log(err),
       () => {
-        this.createTrainingRows();
-        console.log(this.trainingsRows);
       } 
     );
-  }
-
-  private createTrainingRows() {
-    this.trainingsRows = [[]];
-    let j = 0;
-    for (let i = 0; i < this.trainings.length; i++) {
-      if (i != 0 && i % 3 == 0) {
-        this.trainingsRows.push([]);
-        j++;
-      }
-      this.trainingsRows[j].push(this.trainings[i]);
-    }
   }
 
   onDelete(training: Training){   

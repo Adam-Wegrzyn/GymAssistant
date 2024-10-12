@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DataAccess.Enums;
 
 namespace Data.Common.DTO
 {
-    public class ExerciseDTO: BaseDto
+    public class ExerciseDTO
     {
+        public int Id { get; set; }
         public string Name { get; set; }
+        public MuscleGroup MuscleGroup { get; set; }
+        public string Description { get; set; }
+        public string ImagePath { get; set; }
+        public string VideoPath { get; set; }
     }
 }

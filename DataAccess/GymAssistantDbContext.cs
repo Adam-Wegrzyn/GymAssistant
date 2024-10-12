@@ -1,4 +1,5 @@
 ﻿using DataAccess.Entities;
+using DataAccess.Enums;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
@@ -30,8 +31,13 @@ namespace DataAccess
                 .Property(t => t.Weight).HasColumnType<decimal>("decimal").HasPrecision(5, 2);
             modelBuilder.Entity<TrainingLog>()
                 .Property(t => t.Date).HasColumnType<DateTime>("smalldatetime");
-              
-            
+            modelBuilder.Entity<Exercise>()
+                .Property(e => e.MuscleGroup)
+                                .HasConversion(
+                    v => v.ToString(),
+                    v => (MuscleGroup)Enum.Parse(typeof(MuscleGroup), v));
+
+
 
         }
 
