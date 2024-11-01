@@ -17,17 +17,21 @@ namespace Core.Service
             _trainingRepository = trainingRepository;
             _mapper = mapper;
         }
-        public async Task AddExercise(ExerciseDTO ExerciseDTO, CancellationToken cancellationToken)
+        public async Task<Exercise> AddExercise(ExerciseDTO ExerciseDTO, CancellationToken cancellationToken)
         {
             var exercise = _mapper.Map<ExerciseDTO, Exercise>(ExerciseDTO);
             await _trainingRepository.AddExercise(exercise, cancellationToken);
+            return exercise;
+           
         }
 
-        public async Task AddTraining(TrainingDTO TrainingDTO, CancellationToken cancellationToken)
+        public async Task<Training> AddTraining(TrainingDTO TrainingDTO, CancellationToken cancellationToken)
         {
             var training = _mapper.Map<TrainingDTO, Training>(TrainingDTO);
 
             await _trainingRepository.AddTraining(training, cancellationToken);
+
+            return training;
         }
 
         public async Task DeleteExercise(int id, CancellationToken cancellationToken)

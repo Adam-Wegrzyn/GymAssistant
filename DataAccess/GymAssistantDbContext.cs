@@ -1,6 +1,7 @@
 ﻿using DataAccess.Entities;
 using DataAccess.Enums;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 
@@ -8,6 +9,7 @@ namespace DataAccess
 {
     public class GymAssistantDbContext: DbContext
     {
+        private readonly string _connectionString;
         public GymAssistantDbContext(): base()
         {
                 
@@ -17,6 +19,12 @@ namespace DataAccess
         {
             
         }
+
+        public GymAssistantDbContext(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
+
         public DbSet<Exercise> Exercises { get; set; }
         public DbSet<TrainingLog> TrainingLogs { get; set; }
         public DbSet<TrainingSet> TrainingSets { get; set; }
@@ -32,18 +40,26 @@ namespace DataAccess
             modelBuilder.Entity<TrainingLog>()
                 .Property(t => t.Date).HasColumnType<DateTime>("smalldatetime");
             modelBuilder.Entity<Exercise>()
-                .Property(e => e.MuscleGroup)
-                                .HasConversion(
-                    v => v.ToString(),
-                    v => (MuscleGroup)Enum.Parse(typeof(MuscleGroup), v));
-
-
-
+                          .Property(e => e.MuscleGroup)
+                          .HasConversion(new EnumToStringConverter<MuscleGroup>());
         }
 
 
+    
+
+
         protected override void OnConfiguring(DbContextOptionsBuilder options)
- =>     options.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=GymAssistantDB;Trusted_connection=true;TrustServerCertificate=true;");
+        {
+            if (!string.IsNullOrEmpty(_connectionString))
+            {
+                options.UseSqlServer(_connectionString);
+            }
+            else
+            {
+                options.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=GymAssistantDB;Trusted_connection=true;TrustServerCertificate=true;");
+            }
+        }
+
     }
 
     

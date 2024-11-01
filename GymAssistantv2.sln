@@ -16,6 +16,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data.Common", "Data.Common\Data.Common.csproj", "{5C2C857E-FEEC-4EEB-B60B-DCB8B3236543}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymAssistant.Tests", "GymAssistant.Tests\GymAssistant.Tests.csproj", "{40C09E86-55AF-47F2-9271-2D06B9AA4131}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{5C2C857E-FEEC-4EEB-B60B-DCB8B3236543}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C2C857E-FEEC-4EEB-B60B-DCB8B3236543}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C2C857E-FEEC-4EEB-B60B-DCB8B3236543}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40C09E86-55AF-47F2-9271-2D06B9AA4131}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40C09E86-55AF-47F2-9271-2D06B9AA4131}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40C09E86-55AF-47F2-9271-2D06B9AA4131}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40C09E86-55AF-47F2-9271-2D06B9AA4131}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

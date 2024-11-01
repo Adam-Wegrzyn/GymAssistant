@@ -4,8 +4,8 @@ namespace Core.Service
 {
     public interface ITrainingRepository
     {
-        Task AddExercise(Exercise exercise, CancellationToken cancellationToken);
-        Task AddTraining(Training training, CancellationToken cancellationToken);
+        Task<Exercise> AddExercise(Exercise exercise, CancellationToken cancellationToken);
+        Task<Training> AddTraining(Training training, CancellationToken cancellationToken);
         Task DeleteExercise(int id, CancellationToken cancellationToken);
         Task DeleteTraining(int id, CancellationToken cancellationToken);
         Task<List<Exercise>> GetAllExercises(CancellationToken cancellationToken);

@@ -12,10 +12,11 @@ namespace DataAccess.Repository
         {
             _dbContext = dbContext;
         }
-        public async Task AddExercise(Exercise exercise, CancellationToken cancellationToken)
+        public async Task<Exercise> AddExercise(Exercise exercise, CancellationToken cancellationToken)
         {
             _dbContext.Exercises.Add(exercise);
             await _dbContext.SaveChangesAsync(cancellationToken);
+            return exercise;
         }
 
         public async Task<Exercise> GetExercise(int id, CancellationToken cancellationToken)
@@ -23,7 +24,7 @@ namespace DataAccess.Repository
             return await _dbContext.Exercises.Where(e => e.Id == id).FirstOrDefaultAsync(cancellationToken);
         }
 
-        public async Task AddTraining(Training training, CancellationToken cancellationToken)
+        public async Task<Training> AddTraining(Training training, CancellationToken cancellationToken)
         {
             _dbContext.Trainings.Add(training);
             foreach (var t in training.TrainingSetExercise)
@@ -33,6 +34,7 @@ namespace DataAccess.Repository
             }
 
             await _dbContext.SaveChangesAsync(cancellationToken);
+            return training;
         }
 
         public async Task<Training> GetTraining(int id, CancellationToken cancellationToken)
@@ -50,7 +52,7 @@ namespace DataAccess.Repository
 
         public async Task DeleteExercise(int id, CancellationToken cancellationToken)
         {
-            var exercise = _dbContext.Exercises.FirstOrDefault(ex => ex.Id == id);
+            var exercise = _dbContext.Exercises.SingleOrDefault(ex => ex.Id == id);
 
             if (exercise != null)
             {
@@ -94,10 +96,26 @@ namespace DataAccess.Repository
                 .ToListAsync(cancellationToken);
         }
 
+        private void LogTrackedEntities()
+        {
+            var trackedEntities = _dbContext.ChangeTracker.Entries()
+                .Where(e => e.State != EntityState.Detached && e.State != EntityState.Unchanged)
+                .Select(e => new
+                {
+                    EntityName = e.Entity.GetType().Name,
+                    State = e.State.ToString(),
+                    Key = e.Properties.First(p => p.Metadata.IsPrimaryKey()).CurrentValue
+                });
 
+            foreach (var entity in trackedEntities)
+            {
+                Console.WriteLine($"Entity: {entity.EntityName}, State: {entity.State}, Key: {entity.Key}");
+            }
+        }
         public async Task UpdateTraining(Training training, CancellationToken cancellationToken)
         {
             var trainingToUpdate = await GetTraining(training.Id, cancellationToken);
+            _dbContext.Entry(trainingToUpdate).State = EntityState.Detached;
             if (trainingToUpdate != null)
             {
                 //handle what nested entities have been deleted
@@ -112,9 +130,10 @@ namespace DataAccess.Repository
                     .Where(t => deleteIdsSets.Contains(t.Id)).ToList();
                 toDeleteSets.ForEach(t => _dbContext.Entry(t).State = EntityState.Deleted);
                 toDeleteExercise.ForEach(t => _dbContext.Entry(t).State = EntityState.Deleted);
-
+                LogTrackedEntities();
 
                 trainingToUpdate.TrainingSetExercise = training.TrainingSetExercise;
+                trainingToUpdate.Name = training.Name;
                 _dbContext.Update(trainingToUpdate);
 
             }
