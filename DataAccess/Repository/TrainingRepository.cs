@@ -96,28 +96,15 @@ namespace DataAccess.Repository
                 .ToListAsync(cancellationToken);
         }
 
-        private void LogTrackedEntities()
-        {
-            var trackedEntities = _dbContext.ChangeTracker.Entries()
-                .Where(e => e.State != EntityState.Detached && e.State != EntityState.Unchanged)
-                .Select(e => new
-                {
-                    EntityName = e.Entity.GetType().Name,
-                    State = e.State.ToString(),
-                    Key = e.Properties.First(p => p.Metadata.IsPrimaryKey()).CurrentValue
-                });
 
-            foreach (var entity in trackedEntities)
-            {
-                Console.WriteLine($"Entity: {entity.EntityName}, State: {entity.State}, Key: {entity.Key}");
-            }
-        }
         public async Task UpdateTraining(Training training, CancellationToken cancellationToken)
         {
             var trainingToUpdate = await GetTraining(training.Id, cancellationToken);
-            _dbContext.Entry(trainingToUpdate).State = EntityState.Detached;
+            
             if (trainingToUpdate != null)
             {
+             
+
                 //handle what nested entities have been deleted
                 var t1 = trainingToUpdate.TrainingSetExercise.Select(t => t.TrainingSets.Select(tr => tr.Id));
                 var t2 = training.TrainingSetExercise
@@ -130,8 +117,9 @@ namespace DataAccess.Repository
                     .Where(t => deleteIdsSets.Contains(t.Id)).ToList();
                 toDeleteSets.ForEach(t => _dbContext.Entry(t).State = EntityState.Deleted);
                 toDeleteExercise.ForEach(t => _dbContext.Entry(t).State = EntityState.Deleted);
-                LogTrackedEntities();
+                
 
+             
                 trainingToUpdate.TrainingSetExercise = training.TrainingSetExercise;
                 trainingToUpdate.Name = training.Name;
                 _dbContext.Update(trainingToUpdate);
@@ -139,5 +127,6 @@ namespace DataAccess.Repository
             }
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
+
     }
 }

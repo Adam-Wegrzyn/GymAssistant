@@ -18,7 +18,7 @@ using Xunit;
 
 public class TrainingServiceTests: IAsyncLifetime
 {
-    private  TestDbContext _context;
+    private  GymAssistantDbContext _context;
     private  IMapper _mapper;
     private  ITrainingService _trainingService;
     private  MsSqlContainer _msSqlContainer;
@@ -27,6 +27,7 @@ public class TrainingServiceTests: IAsyncLifetime
     {
         _msSqlContainer = new MsSqlBuilder()
         .WithPassword("yourStrong(!)Password")
+        .WithExposedPort(1433)
         .Build();
     }
     public async Task InitializeAsync()
@@ -40,7 +41,7 @@ public class TrainingServiceTests: IAsyncLifetime
         .UseSqlServer(_msSqlContainer.GetConnectionString())
         .Options;
 
-        _context = new TestDbContext(options, conn);
+        _context = new GymAssistantDbContext(conn);
         await _context.Database.MigrateAsync();
         await SeedDatabase();
 
@@ -57,7 +58,6 @@ public class TrainingServiceTests: IAsyncLifetime
 
     }
 
-
     private async Task SeedDatabase()
     {
     //    await ResetDb();
@@ -68,20 +68,12 @@ public class TrainingServiceTests: IAsyncLifetime
         _context.Trainings.AddRange(trainings);
         _context.SaveChanges();
 
-    }
+        // Detach the entities after saving changes
+        foreach (var entity in _context.ChangeTracker.Entries())
+        {
+            entity.State = EntityState.Detached;
+        }
 
-    [Fact]
-    public void ConnectionStateReturnsOpen()
-    {
-        var conn = _msSqlContainer.GetConnectionString();
-        // Given
-        using DbConnection connection = new SqlConnection(_msSqlContainer.GetConnectionString());
-
-        // When
-        connection.Open();
-
-        // Then
-        Assert.Equal(ConnectionState.Open, connection.State);
     }
 
     [Fact]
@@ -201,20 +193,7 @@ public class TrainingServiceTests: IAsyncLifetime
 
     public async Task DisposeAsync()
     {
-      //  await ResetDb();
         await _msSqlContainer.StopAsync();
     }
 
-    private async Task ResetDb()
-    {
-        _context.TrainingSetsExercises.RemoveRange(_context.TrainingSetsExercises
-            .Include(t => t.TrainingSets));
-        _context.Exercises.RemoveRange(_context.Exercises);
-        _context.Trainings.RemoveRange(_context.Trainings
-            .Include(t => t.TrainingSetExercise));
-        await _context.Database.ExecuteSqlRawAsync("DBCC CHECKIDENT ('Exercises', RESEED, 0)");
-        await _context.Database.ExecuteSqlRawAsync("DBCC CHECKIDENT ('TrainingSets', RESEED, 0)");
-        await _context.Database.ExecuteSqlRawAsync("DBCC CHECKIDENT ('Trainings', RESEED, 0)");
-        await _context.SaveChangesAsync();
-    }
 }

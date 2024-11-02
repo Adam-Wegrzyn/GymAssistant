@@ -25,6 +25,7 @@ namespace DataAccess
             _connectionString = connectionString;
         }
 
+
         public DbSet<Exercise> Exercises { get; set; }
         public DbSet<TrainingLog> TrainingLogs { get; set; }
         public DbSet<TrainingSet> TrainingSets { get; set; }
