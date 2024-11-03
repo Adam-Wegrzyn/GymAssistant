@@ -24,7 +24,7 @@ namespace GymAssistant.Tests
                     MuscleGroup = MuscleGroup.Chest,
                     ImagePath = "images/situp.png",
                     VideoPath = "videos/situp.mp4"
-                }
+                },
                 new Exercise
                 {
                     Name = "Biceps curl",

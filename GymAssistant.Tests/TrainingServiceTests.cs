@@ -214,26 +214,6 @@ public class TrainingServiceTests: IAsyncLifetime
         Assert.Single(updatedTraining.TrainingSetExercise);
     }
     
-    [Fact]
-    public async Task UpdateTraining_UpdatesTrainingDeleteExercises()
-    {
-        // Arrange
-        var training = await _context.Trainings.AsNoTracking().SingleAsync(t => t.Id == 1);
-        var updatedTrainingDTO = new TrainingDTO {
-            Id=1,
-            Name = "Updated Routine",
-            TrainingSetExercise = 
-            };
-
-        // Act
-        await _trainingService.UpdateTraining(updatedTrainingDTO, CancellationToken.None);
-
-        // Assert
-        var updatedTraining = await _context.Trainings.AsNoTracking().SingleAsync(t => t.Id == 1);
-        Assert.NotNull(updatedTraining);
-        Assert.Equal("Updated Routine", updatedTraining.Name);
-    }
-
     public async Task DisposeAsync()
     {
         await _msSqlContainer.StopAsync();
