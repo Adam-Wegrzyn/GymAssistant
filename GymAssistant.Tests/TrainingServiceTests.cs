@@ -172,7 +172,7 @@ public class TrainingServiceTests: IAsyncLifetime
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal("Push Up", result.Name);
+        Assert.Equal("Pull Up", result.Name);
     }
 
     [Fact]
@@ -180,7 +180,50 @@ public class TrainingServiceTests: IAsyncLifetime
     {
         // Arrange
         var training = await _context.Trainings.AsNoTracking().SingleAsync(t => t.Id == 1);
-        var updatedTrainingDTO = new TrainingDTO {Id=1, Name = "Updated Routine" };
+        var updatedTrainingDTO = new TrainingDTO {
+            Id=1,
+            Name = "Updated Routine",
+            TrainingSetExercise = new List<TrainingSetExerciseDTO>
+            {
+            new TrainingSetExerciseDTO
+            {
+                Id = 1,
+                Exercise =  new ExerciseDTO
+                {
+                    Name = "Single Leg Deadlift"
+                },
+                TrainingSets = new List<TrainingSetDTO>
+                {
+                    new TrainingSetDTO {  Reps = 10, Weight = 50 },
+                    new TrainingSetDTO {  Reps = 15, Weight = 60 }
+                }
+            },
+            }
+        };
+
+        // Act
+        await _trainingService.UpdateTraining(updatedTrainingDTO, CancellationToken.None);
+
+        // Assert
+        var updatedTraining = await _context.Trainings.AsNoTracking().SingleAsync(t => t.Id == 1);
+        Assert.NotNull(updatedTraining);
+        Assert.Equal("Updated Routine", updatedTraining.Name);
+        Assert.Equal("Single Leg Deadlift", updatedTraining.TrainingSetExercise
+            .SingleOrDefault(t => t.Id == 1).Exercise.Name);
+        //number of exercises have been updated
+        Assert.Single(updatedTraining.TrainingSetExercise);
+    }
+    
+    [Fact]
+    public async Task UpdateTraining_UpdatesTrainingDeleteExercises()
+    {
+        // Arrange
+        var training = await _context.Trainings.AsNoTracking().SingleAsync(t => t.Id == 1);
+        var updatedTrainingDTO = new TrainingDTO {
+            Id=1,
+            Name = "Updated Routine",
+            TrainingSetExercise = 
+            };
 
         // Act
         await _trainingService.UpdateTraining(updatedTrainingDTO, CancellationToken.None);
